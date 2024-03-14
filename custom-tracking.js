@@ -9,19 +9,37 @@ function toggleInquiryDropdown() {
 }
 
 function toggleTargetElements() {
-    var titleCheckbox = document.getElementById('element-title');
-    var titleVariationInput = document.getElementById('title-variation-input');
+    var titleCheckbox = document.getElementById('title_variation_checkbox');
+    var descriptionCheckbox = document.getElementById('description_variation_checkbox');
+    
+    var titleVariationInput = document.getElementById('title_variation_input');
     var titleButtons = document.getElementById('title-buttons');
     var titleVariations = document.getElementById('title-variations');
+    
+    var descriptionVariationInput = document.getElementById('description_variation_input');
+    var descriptionSaveButton = document.getElementById('description_save_button');
+    var savedDescriptionVariation = document.getElementById('saved_description_variation');
 
+    // Toggle display for title variations
     if (titleCheckbox.checked) {
         titleVariationInput.style.display = 'block';
         titleButtons.style.display = 'block';
         titleVariations.style.display = 'block';
     } else {
-        titleVariationInput.style.display = 'none';
+        titleVariationInput.style.display = 'block'; // Title input remains visible even if unchecked
         titleButtons.style.display = 'none';
-        titleVariations.style.display = 'none';
+        titleVariations.style.display = 'block'; // Saved title variations remain visible
+    }
+
+    // Toggle display for description variations
+    if (descriptionCheckbox.checked) {
+        descriptionVariationInput.style.display = 'block';
+        descriptionSaveButton.style.display = 'block';
+        savedDescriptionVariation.style.display = 'block';
+    } else {
+        descriptionVariationInput.style.display = 'block'; // Description input remains visible even if unchecked
+        descriptionSaveButton.style.display = 'none';
+        savedDescriptionVariation.style.display = 'block'; // Saved description variations remain visible
     }
 }
 
@@ -40,11 +58,12 @@ function updateTargetElement() {
 function toggleTitleInput() {
     var checkbox = document.getElementById("title_variation_checkbox");
     var inputField = document.getElementById("title_variation_input");
-    inputField.style.display = checkbox.checked ? "block" : "none";
     var savedVariation = document.getElementById("saved_title_variation");
-    savedVariation.style.display = "none";
     
+    inputField.style.display = checkbox.checked ? "block" : "none";
+    savedVariation.style.display = checkbox.checked ? "block" : "none";
 }
+
 
 // for displaying saved title
 function saveTitleVariation() {
@@ -91,8 +110,6 @@ function saveTitleVariation() {
 }
 
 
-
-
 function editTitleVariation(button) {
     var savedVariation = button.closest('.title-variation'); // Get the parent div containing the saved variation
     var titleSpan = savedVariation.querySelector('div'); // Get the div containing the title
@@ -115,42 +132,19 @@ function deleteTitleVariation(button) {
 }
 
 
-function toggleDescriptionElements() {
-    var descriptionCheckbox = document.getElementById('description_variation_checkbox');
-    var descriptionInput = document.getElementById('description_variation_input');
-    var descriptionSaveButton = document.getElementById('description_save_button');
-    var savedDescriptionVariation = document.getElementById('saved_description_variation');
-
-    var displayStyle = descriptionCheckbox.checked ? 'block' : 'none';
-
-    descriptionInput.style.display = displayStyle;
-    descriptionSaveButton.style.display = displayStyle;
-    savedDescriptionVariation.style.display = displayStyle;
-}
-
-
 function toggleDescriptionInput() {
     var checkbox = document.getElementById("description_variation_checkbox");
     var inputField = document.getElementById("description_variation_input");
+    var savedVariation = document.getElementById("saved_description_variation");
     var saveButton = document.getElementById("description_save_button");
-
-    var displayStyle = checkbox.checked ? "block" : "none";
-
-    inputField.style.display = displayStyle;
-    saveButton.style.display = displayStyle;
-
     
-    saveButton[displayStyle === 'block' ? 'addEventListener' : 'removeEventListener']("click", saveDescriptionVariation);
-
-   
-    if (!checkbox.checked) {
-        inputField.value = ''; // Clear input field
-        var savedVariations = document.getElementsByClassName("description-variation");
-        Array.from(savedVariations).forEach(function(savedVariation) {
-            savedVariation.style.display = 'none';
-        });
-    }
+    var displayStyle = checkbox.checked ? "block" : "none";
+    
+    inputField.style.display = displayStyle;
+    savedVariation.style.display = displayStyle;
+    saveButton.style.display = displayStyle;
 }
+
 
 // Save description variation
 
@@ -219,67 +213,6 @@ function editDescriptionVariation(button) {
     inputField.focus();
 }
 
-// IMAGE SECTION
-
-// function toggleImageInput() {
-//     var checkbox = document.getElementById("image_variation_checkbox");
-//     var inputField = document.getElementById("image_variation_input");
-//     inputField.style.display = checkbox.checked ? "block" : "none";
-// }
-
-// function uploadImage() {
-//     var uploadButton = document.getElementById("image_upload_button");
-//     uploadButton.click();
-//     uploadButton.addEventListener('change', handleImageUpload);
-// }
-
-// function handleImageUpload(event) {
-//     var imageFile = event.target.files[0];
-//     if (imageFile) {
-//         saveImageVariation(imageFile);
-//     }
-// }
-
-// function saveImageVariation(imageFile) {
-//     if (!imageFile) {
-//         return;
-//     }
-    
-//     var savedVariations = document.getElementById("saved_image_variations");
-//     savedVariations.style.display = "block";
-
-//     var img = document.createElement("img");
-//     img.src = URL.createObjectURL(imageFile);
-//     img.classList.add("image-variation");
-
-//     var editButton = createButton("Edit", function() {
-//         editImageVariation(img);
-//     });
-//     editButton.classList.add("edit-button");
-
-//     var deleteButton = createButton("Delete", function() {
-//         deleteImageVariation(img);
-//     });
-//     deleteButton.classList.add("delete-button");
-
-//     appendToContainer(savedVariations, [img, editButton, deleteButton]);
-// }
-
-// function editImageVariation(imageElement) {
-
-// }
-
-// function deleteImageVariation(imageElement) {
-//     var savedVariations = document.getElementById("saved_image_variations");
-//     var editButton = imageElement.nextElementSibling;
-//     var deleteButton = editButton.nextElementSibling;
-//     imageElement.remove();
-//     editButton.remove();
-//     deleteButton.remove();
-//     if (savedVariations.childElementCount === 0) {
-//         savedVariations.style.display = "none";
-//     }
-// }
 
 
 function createButton(text, clickHandler) {
@@ -295,12 +228,14 @@ function appendToContainer(container, elements) {
     });
 }
 
+// Layout
 function toggleLayoutInput() {
     var layoutCheckbox = document.getElementById('layout_variation_checkbox');
     var layoutSelect = document.getElementById('layout_variation_select');
     layoutSelect.style.display = layoutCheckbox.checked ? 'block' : 'none';
 }
 
+// Image
 function toggleImageInput() {
     var imageCheckbox = document.getElementById('image_variation_checkbox');
     var imageInput = document.getElementById('image_variation_input');
