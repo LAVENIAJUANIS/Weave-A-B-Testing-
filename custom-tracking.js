@@ -312,6 +312,42 @@ function editImage(imageFile) {
   
 }
 
+function saveTestDataToJSON() {
+    // Gather data from form fields
+    var testData = {
+        test_name: document.getElementById('test_name').value,
+        conversion_goals: Array.from(document.querySelectorAll('input[name="conversion_goals[]"]:checked')).map(function(goal) {
+            return goal.value;
+        }),
+        content_id: document.getElementById('content-select').value,
+        target_elements: {
+            title_variation: document.getElementById('title_variation_checkbox').checked,
+            description_variation: document.getElementById('description_variation_checkbox').checked,
+            image_variation: document.getElementById('image_variation_checkbox').checked,
+            layout_variation: document.getElementById('layout_variation_checkbox').checked
+            // Add more target elements as needed
+        },
+        // Add more fields as needed
+    };
+
+    // Convert data to JSON format
+    var jsonData = JSON.stringify(testData, null, 2); // Use null and 2 for pretty formatting
+
+    // Send JSON data to server for storage
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'save_test_data.php'); // Replace 'save_test_data.php' with the actual endpoint
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log('Data saved successfully');
+        } else {
+            console.error('Failed to save data');
+        }
+    };
+    xhr.send(jsonData);
+}
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.action-button').forEach(function(button) {
