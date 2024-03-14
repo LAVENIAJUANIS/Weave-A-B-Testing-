@@ -1,0 +1,41 @@
+
+
+.container {
+    margin: 20px;
+}
+.input-field {
+    margin-bottom: 10px;
+}
+.title-variation,
+.description-variation {
+    margin-bottom: 10px;
+}
+.button-container {
+    margin-top: 5px;
+}
+
+.saved-variation {
+    margin-top: 10px; /* Adjust the margin as needed */
+}
+
+.saved-variation .description-variation {
+    margin-bottom: 5px; /* Adjust the margin as needed */
+}
+
+
+.input-field {
+    margin-bottom: 10px;
+}
+
+#description_variation_input textarea,
+#description_variation_input button {
+    display: inline-block;
+    vertical-align: top; /* Aligns the button with the top of the textarea */
+}
+
+#description_save_button {
+    margin-left: 10px; /* Adjust this value as needed */
+}
+
+
+
