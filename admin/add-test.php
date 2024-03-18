@@ -172,7 +172,6 @@ function ab_testify_test_page() {
 
 // Process form submission
 
-// Process form submission
 add_action('admin_post_ab_testify_start_test', 'ab_testify_process_test_submission');
 
 function ab_testify_process_test_submission() {
@@ -214,6 +213,12 @@ function ab_testify_process_test_submission() {
             // Add other relevant test data as needed
         );
 
+        // Randomly assign variation to incoming traffic
+        $variation = rand(0, 1); // Randomly choose between variation A and B (0 or 1)
+
+        // Add variation information to test data
+        $test_data['variation'] = $variation;
+
         // Load existing data
         $existing_data = array();
         $existing_data_path = plugin_dir_path(__FILE__) . 'ab_testing_data.json';
@@ -240,7 +245,6 @@ function ab_testify_process_test_submission() {
         exit();
     }
 }
-
 
 
 ?>

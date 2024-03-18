@@ -147,15 +147,21 @@ function ab_testify_deactivate() {
    
 }
 
+
+
 function ab_testify_load_results_page() {
     include_once(plugin_dir_path(__FILE__) . 'admin/results.php');
 }
+
+require_once(plugin_dir_path(__FILE__) . 'ab_test_traffic_split.php');
+
 
 
 // Include admin files
 include_once(plugin_dir_path(__FILE__) . 'admin/dashboard.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/add-test.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/results.php');
+include_once(plugin_dir_path(__FILE__) . 'admin/ab_test_metrics.php');
 
 
 
