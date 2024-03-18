@@ -38,4 +38,32 @@
 }
 
 
+.ab-test-results {
+    width: 80%; /* Adjust width as needed */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px; /* Add padding for spacing */
+    background-color: #f9f9f9; /* Add a background color */
+  }
+  
+  .ab-test-results h3 {
+    margin-top: 0; /* Remove default margin for the heading */
+  }
+  
+  .ab-test-results ul {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0; /* Remove default padding */
+  }
+  
+  .ab-test-results li {
+    margin-bottom: 10px; /* Add space between list items */
+  }
+  
+  /* Adjust as needed based on your specific layout and design requirements */
+  .delete-button {
+    background-color: red;
+    color: white;
+}
 
+.delete-button:hover {
+    background-color: darkred;
+}

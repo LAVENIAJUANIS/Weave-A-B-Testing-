@@ -65,45 +65,45 @@ function get_page_content_callback() {
 
 // Function to handle AJAX request for saving test data
 function save_test_data() {
-
-    echo 'save_test_data function is triggered!';
     // Check if data is received via POST request
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
         $json_data = file_get_contents('php://input');
         
         // Validate JSON data
         $decoded_data = json_decode($json_data, true);
 
         if ($decoded_data === null) {
-        
             http_response_code(400); 
             echo json_encode(array('error' => 'Invalid JSON data'));
             exit();
         }
 
-
-    
-        $encoded_data = json_encode($decoded_data, JSON_PRETTY_PRINT);
-
-        // Define the file path dynamically to be in the same directory as this plugin file
-        $file_path = plugin_dir_path(__FILE__) . 'ab_testing_data.json'; 
-        echo 'File path: ' . $file_path;
+        $decoded_data['creation_date'] = current_time('Y-m-d H:i:s');
 
         
+        $file_path = plugin_dir_path(__FILE__) . 'ab_testing_data.json'; 
+        
+        
+        $existing_data = file_exists($file_path) ? json_decode(file_get_contents($file_path), true) : array();
+
+        
+        $existing_data[] = $decoded_data;
+
+       
+        $encoded_data = json_encode($existing_data, JSON_PRETTY_PRINT);
+
+       
         if (file_put_contents($file_path, $encoded_data) !== false) {
-            
             echo json_encode(array('success' => true));
             exit();
         } else {
-            
-            http_response_code(500); // Internal server error
+            http_response_code(500); 
             echo json_encode(array('error' => 'Failed to save data'));
             exit();
         }
     } else {
-        // Invalid request method
-        http_response_code(405); // Method not allowed
+        
+        http_response_code(405); 
         echo json_encode(array('error' => 'Invalid request method'));
         exit();
     }
@@ -120,7 +120,6 @@ function ab_testify_track_interaction_callback() {
     $variation_id = isset($_POST['variation_id']) ? $_POST['variation_id'] : 0;
     $interaction_type = isset($_POST['interaction_type']) ? $_POST['interaction_type'] : '';
 
-    // Perform necessary actions with variation ID and interaction type (e.g., save to database)
 
     wp_send_json_success('Interaction tracked successfully');
 }
@@ -136,16 +135,28 @@ function ab_testify_activate() {
    
 }
 
+add_shortcode('ab_testify_results', 'ab_testify_results_shortcode');
+
+// Shortcode function to display A/B testing results
+
+
+
 register_deactivation_hook(__FILE__, 'ab_testify_deactivate');
 
 function ab_testify_deactivate() {
    
 }
 
+function ab_testify_load_results_page() {
+    include_once(plugin_dir_path(__FILE__) . 'admin/results.php');
+}
+
+
 // Include admin files
 include_once(plugin_dir_path(__FILE__) . 'admin/dashboard.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/add-test.php');
-include_once(plugin_dir_path(__FILE__) . 'admin/preview-page.php');
+include_once(plugin_dir_path(__FILE__) . 'admin/results.php');
+
 
 
 ?>

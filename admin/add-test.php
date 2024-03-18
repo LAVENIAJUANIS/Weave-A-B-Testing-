@@ -1,6 +1,9 @@
 <?php
 
+
 add_action('admin_menu', 'ab_testify_add_test_page');
+
+// require_once('ab-testing-functions.php');
 
 function ab_testify_add_test_page() {
     add_submenu_page('ab-testify-dashboard', 'Add Test', 'Add Test', 'manage_options', 'ab-testify-add-test', 'ab_testify_test_page');
@@ -169,10 +172,13 @@ function ab_testify_test_page() {
 
 // Process form submission
 
+// Process form submission
 add_action('admin_post_ab_testify_start_test', 'ab_testify_process_test_submission');
 
 function ab_testify_process_test_submission() {
     if(isset($_POST['ab_testify_submit']) && $_POST['ab_testify_submit'] == 'Start Test') {
+        // Capture the current date
+        $creation_date = date('Y-m-d');
 
         // Gather test data from form submission
         $test_name = isset($_POST['test_name']) ? sanitize_text_field($_POST['test_name']) : '';
@@ -204,6 +210,7 @@ function ab_testify_process_test_submission() {
             'test_duration' => $test_duration,
             'impressions' => 0, // Initialize impressions counter (for analysis later)
             'interactions' => array(), // Initialize interactions data (for analysis later)
+            'creation_date' => $creation_date, // Add creation date
             // Add other relevant test data as needed
         );
 
@@ -233,6 +240,7 @@ function ab_testify_process_test_submission() {
         exit();
     }
 }
+
 
 
 ?>

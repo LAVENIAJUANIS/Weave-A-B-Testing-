@@ -1,4 +1,5 @@
 <?php
+
 // Add Dashboard page
 add_action('admin_menu', 'ab_testify_add_dashboard_page');
 
@@ -10,6 +11,15 @@ function ab_testify_add_dashboard_page() {
         'ab-testify-dashboard', 
         'ab_testify_dashboard_page', 
         'dashicons-chart-bar'
+    );
+
+    add_submenu_page(
+        'ab-testify-dashboard', // Parent slug (dashboard page)
+        'View Results', // Page title
+        'View Results', // Menu title
+        'manage_options', // Capability required to access the page
+        'ab-testify-view-results', // Menu slug
+        'ab_testify_view_results_page' // Callback function to display the page content
     );
 }
 
@@ -41,7 +51,8 @@ function ab_testify_dashboard_page() {
                             <th scope="col">Test Name</th>
                             <th scope="col">Status</th>
                             <th scope="col">Page Views</th>
-                            <th scope="col">Date</th>
+                            <th scope="col">Date Created</th> <!-- Changed column name -->
+                            <th scope="col">Actions</th> <!-- Added Actions column -->
                         </tr>
                     </thead>
                     <tbody>
@@ -49,9 +60,17 @@ function ab_testify_dashboard_page() {
                         <?php if (is_array($test) && isset($test['test_name'])) : ?>
                             <tr>
                                 <td><?php echo esc_html($test['test_name']); ?></td>
-                                <td><?php echo calculate_test_status($test); ?></td>
+                                <!-- Display test status -->
+                                <td><?php echo get_test_status($test); ?></td>
+                                <!-- Display impressions -->
                                 <td><?php echo intval($test['impressions']); ?></td>
+                                <!-- Display creation date -->
                                 <td><?php echo isset($test['creation_date']) ? date('Y-m-d', strtotime($test['creation_date'])) : ''; ?></td>
+                                <!-- Add View button for each test -->
+                                <td>
+                                    <a href="<?php echo admin_url('admin.php?page=ab-testify-view-results&test_id=' . $key); ?>" class="button" style="background-color: lightgreen; color: black;">View</a>
+                                    <a href="<?php echo admin_url('admin.php?page=ab-testify-delete-test&test_id=' . $key); ?>" class="button" style="background-color: red; color: white;">Delete</a>
+                                </td>
                             </tr>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -66,6 +85,42 @@ function ab_testify_dashboard_page() {
         echo '<p>File not found: ' . esc_html($file_path) . '</p>';
     }
 }
+
+
+function get_test_status($test) {
+    // Determine test status based on your criteria
+    // For example, you can check if the test has reached a certain duration, or if enough data has been collected
+    // Return appropriate status message
+    return 'Active'; // Example status message
+}
+
+// Process deletion request
+add_action('admin_init', 'ab_testify_process_delete_test');
+
+function ab_testify_process_delete_test() {
+    // Check if the user has the necessary capability
+    if (!current_user_can('manage_options')) {
+        wp_die(__('Sorry, you are not allowed to access this page.'));
+    }
+
+    // Check if the delete test action is triggered
+    if (isset($_GET['action']) && $_GET['action'] === 'delete_test') {
+        // Check if the test ID is provided
+        if (isset($_GET['test_id'])) {
+            $test_id = $_GET['test_id'];
+
+            // Perform deletion logic here
+            // For example, you can delete the test data associated with the provided test ID
+
+            // After deleting the test, you may want to redirect the user to the dashboard or another appropriate page
+            wp_redirect(admin_url('admin.php?page=ab-testify-dashboard'));
+            exit();
+        }
+    }
+}
+
+
+
 
 
 
