@@ -31,227 +31,89 @@ function toggleInquiryDropdown() {
 
 
     function toggleImageInput() {
-        console.log("Function called"); // Check if the function is called
+        console.log("toggleImageInput function called"); // Debug statement to check if the function is called
         var imageCheckbox = document.getElementById('image_variation_checkbox');
-        var imageInput = document.getElementById('image_variation_input');
-        console.log("Checkbox state:", imageCheckbox.checked); // Check the checkbox state
+        var imageUploadSection = document.getElementById('image_upload_section'); // Target the parent div
+        console.log("Checkbox state:", imageCheckbox.checked); // Debug statement to check the checkbox state
         if (imageCheckbox.checked) {
-            console.log("Checkbox is checked"); // Check if the checkbox is checked
-            imageInput.style.display = 'block';
+            console.log("Checkbox is checked"); // Debug statement for when the checkbox is checked
+            imageUploadSection.style.display = 'block'; // Show the parent div
         } else {
-            console.log("Checkbox is unchecked"); // Check if the checkbox is unchecked
-            imageInput.style.display = 'none';
+            console.log("Checkbox is unchecked"); // Debug statement for when the checkbox is unchecked
+            imageUploadSection.style.display = 'none'; // Hide the parent div
         }
     }
     
-   
-
-// function updateTargetElement() {
-//     var titleCheckbox = document.getElementById('title_variation_checkbox');
-//     var titleVariationInput = document.getElementById('title_variation_input');
-//     titleVariationInput.style.display = titleCheckbox.checked ? 'block' : 'none';
-// }
-
-// function toggleTitleInput() {
-//     var checkbox = document.getElementById("title_variation_checkbox");
-//     var inputField = document.getElementById("title_variation_input");
-//     var savedVariation = document.getElementById("saved_title_variation");
+    function previewImage(event) {
+        console.log("previewImage function called"); // Debug statement to check if the function is called
+        var preview = document.getElementById("image_variation_preview");
+        var file = event.target.files[0];
+        console.log("Selected file:", file); // Debug statement to check the selected file
+        var reader = new FileReader();
     
-//     inputField.style.display = checkbox.checked ? "block" : "none";
-//     savedVariation.style.display = checkbox.checked ? "block" : "none";
-// }
-
-// function toggleDescriptionInput() {
-//     var checkbox = document.getElementById("description_variation_checkbox");
-//     var inputField = document.getElementById("description_variation_input");
-//     var savedVariation = document.getElementById("saved_description_variation");
-//     var saveButton = document.getElementById("description_save_button");
+        reader.onload = function() {
+            preview.src = reader.result;
+            preview.style.display = "block";
+        }
     
-//     var displayStyle = checkbox.checked ? "block" : "none";
+        if (file) {
+            console.log("File selected"); // Debug statement for when a file is selected
+            reader.readAsDataURL(file);
+        }
+    }
+
+    jQuery(document).ready(function($) {
+        $('#ab-testify-form').submit(function(e) {
+            e.preventDefault();
     
-//     inputField.style.display = displayStyle;
-//     savedVariation.style.display = displayStyle;
-//     saveButton.style.display = displayStyle;
-// }
-
-// function toggleLayoutInput() {
-//     var layoutCheckbox = document.getElementById('layout_variation_checkbox');
-//     var layoutSelect = document.getElementById('layout_variation_select');
-//     layoutSelect.style.display = layoutCheckbox.checked ? 'block' : 'none';
-// }
-
-// function toggleImageInput() {
-//     var imageCheckbox = document.getElementById('image_variation_checkbox');
-//     var imageInput = document.getElementById('image_variation_input');
-//     imageInput.style.display = imageCheckbox.checked ? 'block' : 'none';
-// }
-
-// function uploadImage() {
-//     var uploadButton = document.getElementById("image_upload_button");
-//     uploadButton.click();
-//     uploadButton.addEventListener('change', handleImageUpload);
-// }
-
-// function handleImageUpload(event) {
-//     var imageFiles = event.target.files;
-//     if (imageFiles && imageFiles.length > 0) {
-//         for (var i = 0; i < imageFiles.length; i++) {
-//             displayImagePreview(imageFiles[i]);
-//         }
-//     }
-// }
-
-// function displayImagePreview(imageFile) {
-//     var imagePreview = document.getElementById("image_preview");
-   
-//     var imageContainer = document.createElement("div");
-//     imageContainer.classList.add("image-container");
-
-//     var img = document.createElement("img");
-//     img.src = URL.createObjectURL(imageFile);
-//     img.classList.add("uploaded-image");
-   
-//     img.style.width = "200px";
-//     img.style.height = "auto"; 
+            // Read the selected image file
+            var fileInput = document.getElementById('image_variation_input');
+            var imageFile = fileInput.files[0];
     
-//     imageContainer.appendChild(img);
-
-//     var br1 = document.createElement("br");
-//     var br2 = document.createElement("br");
-//     imageContainer.appendChild(br1);
-
-//     var editButton = createButton("Edit", function() {
-//         editImage(imageFile);
-//     });
-//     imageContainer.appendChild(editButton);
-
-//     var deleteButton = createButton("Delete", function() {
-//         deleteImage(imageContainer);
-//     });
-//     imageContainer.appendChild(deleteButton);
-
-//     imageContainer.appendChild(br2);
-
-//     imagePreview.appendChild(imageContainer);
-
-//     imagePreview.style.display = "block";
-// }
-
-// function deleteImage(imageContainer) {
-//     imageContainer.remove();
-// }
-
-// function editImage(imageFile) {
-//     // Functionality to edit image
-// }
-
-// function saveTitleVariation() {
-//     var inputField = document.getElementById("title_variation_text");
-//     var titleVariation = inputField.value.trim();
-//     if (titleVariation !== '') {
-//         var savedVariation = document.getElementById("saved_title_variation");
-
-//         var variationDiv = document.createElement("div");
-//         variationDiv.textContent = titleVariation;
-
-//         var editButton = createButton("Edit", function() {
-//             editTitleVariation(this);
-//         });
-
-//         var deleteButton = createButton("Delete", function() {
-//             deleteTitleVariation(this);
-//         });
-
-//         var buttonContainer = document.createElement("div");
-//         buttonContainer.appendChild(editButton);
-//         buttonContainer.appendChild(deleteButton);
-
-//         var entryContainer = document.createElement("div");
-//         entryContainer.classList.add("title-variation");
-//         entryContainer.appendChild(variationDiv);
-//         entryContainer.appendChild(buttonContainer);
-
-//         savedVariation.appendChild(entryContainer);
-//         savedVariation.style.display = "block";
-//     }
-//     inputField.value = '';
-// }
-
-// function editTitleVariation(button) {
-//     var savedVariation = button.closest('.title-variation');
-//     var titleSpan = savedVariation.querySelector('div');
-//     var title = titleSpan.textContent.trim();
-
-//     var inputField = document.getElementById("title_variation_text");
-//     inputField.value = title;
-//     inputField.style.display = "inline-block";
-//     document.getElementById("save_button").style.display = "inline-block";
-//     savedVariation.style.display = "none";
-//     inputField.focus();
-// }
-
-// function deleteTitleVariation(button) {
-//     var savedVariation = button.parentNode.parentNode;
-//     savedVariation.remove();
-// }
-
-// function saveDescriptionVariation() {
-//     var inputField = document.getElementById("description_variation_text");
-//     var descriptionVariation = inputField.value.trim();
-//     if (descriptionVariation !== '') {
-//         var savedVariation = document.getElementById("saved_description_variation");
-
-//         var variationDiv = document.createElement("div");
-//         variationDiv.textContent = descriptionVariation;
-
-//         var editButton = createButton("Edit", function() {
-//             editDescriptionVariation(this);
-//         });
-
-//         var deleteButton = createButton("Delete", function() {
-//             deleteDescriptionVariation(this);
-//         });
-
-//         var buttonContainer = document.createElement("div");
-//         buttonContainer.appendChild(editButton);
-//         buttonContainer.appendChild(deleteButton);
-
-//         var entryContainer = document.createElement("div");
-//         entryContainer.classList.add("description-variation"); 
-//         entryContainer.appendChild(variationDiv);
-//         entryContainer.appendChild(buttonContainer);
-
-//         savedVariation.appendChild(entryContainer);
-//         savedVariation.style.display = "block"; 
-//     }
-//     inputField.value = ''; 
-// }
-
-// function editDescriptionVariation(button) {
-//     var savedVariation = button.closest('.description-variation'); 
-//     var descriptionDiv = savedVariation.querySelector('div'); 
-//     var description = descriptionDiv.textContent.trim(); 
-
-//     var inputField = document.getElementById("description_variation_text");
-//     inputField.value = description; 
-//     inputField.style.display = "inline-block"; 
-//     document.getElementById("description_save_button").style.display = "inline-block"; 
-//     savedVariation.style.display = "none"; 
-//     inputField.focus();
-// }
-
-// function createButton(text, clickHandler) {
-//     var button = document.createElement("button");
-//     button.textContent = text;
-//     button.addEventListener("click", clickHandler);
-//     return button;
-// }
-
-// function appendToContainer(container, elements) {
-//     elements.forEach(function(element) {
-//         container.appendChild(element);
-//     });
-// }
+            // Check if an image file is selected
+            if (imageFile) {
+                // Read the image file as a data URL
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    // Convert the image data to base64
+                    var base64Image = event.target.result;
+    
+                    // Include the base64-encoded image data in the FormData object
+                    var formData = new FormData();
+                    formData.append('image_variation', base64Image);
+    
+                    // Serialize other form data
+                    var otherFormData = $(this).serialize();
+                    formData.append('other_data', otherFormData);
+    
+                    // Send the AJAX request
+                    $.ajax({
+                        url: ajaxurl,
+                        type: 'POST',
+                        processData: false, // Prevent jQuery from processing the FormData object
+                        contentType: false, // Prevent jQuery from setting the Content-Type header
+                        data: formData,
+                        success: function(response) {
+                            // Handle success response
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.error(error);
+                        }
+                    });
+                };
+                reader.readAsDataURL(imageFile); // Read the image file as a data URL
+            } else {
+                console.log('No image file selected.');
+            }
+        });
+    });
+    
+    
+    
+    
+  
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.action-button').forEach(function(button) {

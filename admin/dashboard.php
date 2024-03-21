@@ -67,7 +67,19 @@ function ab_testify_dashboard_page() {
                                 <td><?php echo get_test_status($test); ?></td>
                                 <!-- Display impressions -->
                                 <td><?php echo intval($test['impressions']); ?></td>
-                                <td><?php echo isset($test['variations']['image']) ? '<img src="' . esc_url($test['variations']['image']) . '" style="max-width: 100px; max-height: 100px;" />' : ''; ?></td>
+                                <td>
+                                <?php if (isset($test['variations']) && isset($test['variations']['image'])) : ?>
+                                    <?php $image_url = esc_url($test['variations']['image']); ?>
+                                    <?php if (!empty($image_url)) : ?>
+                                        <img src="<?php echo $image_url; ?>" style="max-width: 100px; max-height: 100px;" />
+                                    <?php else : ?>
+                                        <p>Error: Image not found.</p>
+                                    <?php endif; ?>
+                                <?php else : ?>
+                                    No Image
+                                <?php endif; ?>
+                            </td>
+
                                 <td><?php echo isset($test['variations']['title']) ? esc_html($test['variations']['title']) : ''; ?></td>
                                 <!-- Display variation description -->
                                 <td><?php echo isset($test['variations']['description']) ? esc_html($test['variations']['description']) : ''; ?></td>

@@ -1,6 +1,6 @@
 [
     {
-        "test_id": "65fa8aba6b659",
+        "test_id": "65fbf76ea0790",
         "test_name": "Test 1",
         "conversion_goals": [],
         "content_id": 2,
@@ -11,331 +11,90 @@
             "image_variation": true,
             "layout_variation": false
         },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": {
-            "title": "dd, mm",
-            "description": "huh, very difficult"
-        },
-        "creation_date": "2024-03-20"
-    },
-    {
-        "test_id": "65fa8b302e105",
-        "test_name": "Test 2",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": true,
-            "description_variation": true,
-            "image_variation": true,
-            "layout_variation": false
-        },
         "test_duration": 7,
         "impressions": 0,
         "variations": {
-            "title": "sampai",
-            "description": "ku"
+            "title": "Title V1, Title V2",
+            "description": "DESC 1, DESC 2"
         },
-        "creation_date": "2024-03-20"
+        "creation_date": "2024-03-21"
     },
     {
-        "test_id": "65fa8daf3c116",
-        "test_name": "img",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": true,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": {
-            "description": "pp"
-        },
-        "creation_date": "2024-03-20"
-    },
-    {
-        "test_id": "65fa9bdae4ef6",
-        "test_name": "Test Image",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": true,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 7,
-        "impressions": 0,
-        "variations": {
-            "description": "hey"
-        },
-        "creation_date": "2024-03-20"
-    },
-    {
-        "test_id": "65fa9fc732310",
-        "test_name": "test 3",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": true,
-            "layout_variation": true
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-20"
-    },
-    {
-        "test_id": "65faa53dae53d",
-        "test_name": "test img :)",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-20"
-    },
-    {
-        "test_id": "65faab4279226",
-        "test_name": "test img64",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-20"
-    },
-    {
-        "test_id": "65faacb50f539",
-        "test_name": "JIKA",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": true,
-            "description_variation": true,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 7,
-        "impressions": 0,
-        "variations": {
-            "title": "TAK, SEMUDAH",
-            "description": "ITU, HAHA"
-        },
-        "creation_date": "2024-03-20"
-    },
-    {
-        "test_id": "65faae0636841",
+        "test_id": "65fbfbbba5721",
         "test_name": "Test 2",
         "conversion_goals": [],
         "content_id": 2,
         "content_title": "Sample Page",
         "target_elements": {
             "title_variation": false,
-            "description_variation": false,
+            "description_variation": true,
             "image_variation": true,
             "layout_variation": false
         },
         "test_duration": 1,
         "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-20"
-    },
-    {
-        "test_id": "65fb8b87aa15d",
-        "test_name": "Test 1",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": true,
-            "layout_variation": false
+        "variations": {
+            "description": ""
         },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
         "creation_date": "2024-03-21"
     },
     {
-        "test_id": "65fb91dc8d71d",
-        "test_name": "imgs",
+        "test_id": "65fc593d01c80",
+        "test_name": "Test 3",
         "conversion_goals": [],
         "content_id": 2,
         "content_title": "Sample Page",
         "target_elements": {
             "title_variation": false,
-            "description_variation": false,
+            "description_variation": true,
             "image_variation": true,
             "layout_variation": false
         },
         "test_duration": 1,
         "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fb959a315f5",
-        "test_name": "Jebal",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": true,
-            "layout_variation": false
+        "variations": {
+            "description": "dd, ss"
         },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
         "creation_date": "2024-03-21"
     },
     {
-        "test_id": "65fb9dcf6b9fc",
-        "test_name": "xx",
+        "test_id": "65fc5f85edb82",
+        "test_name": "Test 4",
         "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
+        "content_id": 1,
+        "content_title": "Hello world!",
         "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fba57c5072f",
-        "test_name": "tests",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
+            "title_variation": true,
             "description_variation": false,
             "image_variation": false,
             "layout_variation": false
         },
-        "test_duration": 1,
+        "test_duration": 7,
         "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fba9d738fe6",
-        "test_name": "Test 1",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": false,
-            "layout_variation": false
+        "variations": {
+            "title": "Title 1, Title 2"
         },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
         "creation_date": "2024-03-21"
     },
     {
-        "test_id": "65fbaa339b6cf",
-        "test_name": "ll",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fbb05b78237",
-        "test_name": "ss",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fbcbe202399",
-        "test_name": "test 1",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": false,
-            "image_variation": false,
-            "layout_variation": true
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": [],
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fbd434e6459",
-        "test_name": "Last",
+        "test_id": "65fc737c5d457",
+        "test_name": "Testing",
         "conversion_goals": [
             "cta"
         ],
-        "content_id": 2,
-        "content_title": "Sample Page",
+        "content_id": 1,
+        "content_title": "Hello world!",
         "target_elements": {
             "title_variation": true,
             "description_variation": true,
-            "image_variation": true,
+            "image_variation": false,
             "layout_variation": false
         },
         "test_duration": 7,
         "impressions": 0,
         "variations": {
-            "title": "T1, T2",
-            "description": "D1, D2"
+            "title": "First, Second",
+            "description": ""
         },
         "creation_date": "2024-03-21"
     }
