@@ -64,54 +64,73 @@ function get_page_content_callback() {
 
 
 // Function to handle AJAX request for saving test data
+// Function to handle AJAX request for saving test data
 function save_test_data() {
     // Check if data is received via POST request
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $json_data = file_get_contents('php://input');
-        
-        // Validate JSON data
-        $decoded_data = json_decode($json_data, true);
-
-        if ($decoded_data === null) {
-            http_response_code(400); 
-            echo json_encode(array('error' => 'Invalid JSON data'));
-            exit();
-        }
-
-        $decoded_data['creation_date'] = current_time('Y-m-d H:i:s');
-
-        
-        $file_path = plugin_dir_path(__FILE__) . 'ab_testing_data.json'; 
-        
-        
-        $existing_data = file_exists($file_path) ? json_decode(file_get_contents($file_path), true) : array();
-
-        
-        $existing_data[] = $decoded_data;
-
-       
-        $encoded_data = json_encode($existing_data, JSON_PRETTY_PRINT);
-
-       
-        if (file_put_contents($file_path, $encoded_data) !== false) {
-            echo json_encode(array('success' => true));
-            exit();
-        } else {
-            http_response_code(500); 
-            echo json_encode(array('error' => 'Failed to save data'));
-            exit();
-        }
-    } else {
-        
-        http_response_code(405); 
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
         echo json_encode(array('error' => 'Invalid request method'));
+        exit();
+    }
+
+    // Validate and sanitize incoming data
+    $test_data = array(
+        'test_id' => uniqid(), // Generate unique test ID
+        'test_name' => isset($_POST['test_name']) ? sanitize_text_field($_POST['test_name']) : '',
+        'conversion_goals' => isset($_POST['conversion_goals']) ? $_POST['conversion_goals'] : array(),
+        'content_id' => isset($_POST['content']) ? intval($_POST['content']) : 0,
+        'test_duration' => isset($_POST['test_duration']) ? intval($_POST['test_duration']) : 0,
+        'impressions' => 0,
+        'creation_date' => current_time('Y-m-d H:i:s'),
+    );
+
+    // Handle variations separately
+    $variations = array();
+
+    if (isset($_POST['title_variation_checkbox']) && isset($_POST['title_variation_text'])) {
+        $variations['title'] = sanitize_text_field($_POST['title_variation_text']);
+    }
+
+    if (isset($_POST['description_variation_checkbox']) && isset($_POST['description_variation_text'])) {
+        $variations['description'] = sanitize_textarea_field($_POST['description_variation_text']);
+    }
+
+    if (isset($_POST['layout_variation_checkbox']) && isset($_POST['layout_variation'])) {
+        $variations['layout'] = sanitize_text_field($_POST['layout_variation']);
+    }
+
+    // Handle image variations separately
+    if (isset($_FILES['image_variation']) && !empty($_FILES['image_variation']['tmp_name'])) {
+        // Read the image file into a string
+        $image_data = file_get_contents($_FILES['image_variation']['tmp_name']);
+
+        // Convert the image data to base64 format
+        $base64_image = base64_encode($image_data);
+
+        // Add the base64 image to the test data variations array
+        $variations['image'] = $base64_image;
+    }
+
+    $test_data['variations'] = $variations;
+
+    // Save test data to JSON file
+    $file_path = plugin_dir_path(__FILE__) . 'ab_testing_data.json';
+    $existing_data = file_exists($file_path) ? json_decode(file_get_contents($file_path), true) : array();
+    $existing_data[] = $test_data;
+    $encoded_data = json_encode($existing_data, JSON_PRETTY_PRINT);
+
+    if (file_put_contents($file_path, $encoded_data) !== false) {
+        echo json_encode(array('success' => true));
+        exit();
+    } else {
+        http_response_code(500);
+        echo json_encode(array('error' => 'Failed to save data'));
         exit();
     }
 }
 
 // Add action hook for handling AJAX request
 add_action('wp_ajax_save_test_data', 'save_test_data');
-
 
 // AJAX action to track user interaction
 add_action('wp_ajax_ab_testify_track_interaction', 'ab_testify_track_interaction_callback');

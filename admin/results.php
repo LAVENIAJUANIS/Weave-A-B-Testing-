@@ -145,8 +145,3 @@ function ab_testify_view_results_page() {
     }
 }
 ?>
-
-
-
-
-?>
