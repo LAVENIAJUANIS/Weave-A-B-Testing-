@@ -1,66 +1,10 @@
 [
     {
-        "test_id": "65fbf76ea0790",
+        "test_id": "6601376564eda",
         "test_name": "Test 1",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": true,
-            "description_variation": true,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 7,
-        "impressions": 0,
-        "variations": {
-            "title": "Title V1, Title V2",
-            "description": "DESC 1, DESC 2"
-        },
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fbfbbba5721",
-        "test_name": "Test 2",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": true,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": {
-            "description": ""
-        },
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fc593d01c80",
-        "test_name": "Test 3",
-        "conversion_goals": [],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": true,
-            "image_variation": true,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions": 0,
-        "variations": {
-            "description": "dd, ss"
-        },
-        "creation_date": "2024-03-21"
-    },
-    {
-        "test_id": "65fc5f85edb82",
-        "test_name": "Test 4",
-        "conversion_goals": [],
+        "conversion_goals": [
+            "test button"
+        ],
         "content_id": 1,
         "content_title": "Hello world!",
         "target_elements": {
@@ -69,33 +13,206 @@
             "image_variation": false,
             "layout_variation": false
         },
-        "test_duration": 7,
-        "impressions": 0,
+        "test_duration": 1,
+        "impressions_per_variation": 1,
         "variations": {
-            "title": "Title 1, Title 2"
+            "title": "T1, T2"
         },
-        "creation_date": "2024-03-21"
+        "creation_date": "2024-03-25",
+        "conversion_data": [
+            {
+                "goal": "test button",
+                "variations": [
+                    {
+                        "variation_key": "title",
+                        "conversion_rate": 0.93,
+                        "conversion_count": 0
+                    }
+                ]
+            }
+        ]
     },
     {
-        "test_id": "65fc737c5d457",
-        "test_name": "Testing",
+        "test_id": "66013ae011ef1",
+        "test_name": "Test 2",
         "conversion_goals": [
-            "cta"
+            "Test contact form"
+        ],
+        "content_id": 2,
+        "content_title": "Sample Page",
+        "target_elements": {
+            "title_variation": false,
+            "description_variation": true,
+            "image_variation": false,
+            "layout_variation": false
+        },
+        "test_duration": 1,
+        "impressions_per_variation": 1,
+        "variations": {
+            "description": "desc 1, desc 2"
+        },
+        "creation_date": "2024-03-25",
+        "conversion_data": [
+            {
+                "goal": "Test contact form",
+                "variations": [
+                    {
+                        "variation_key": "description",
+                        "conversion_rate": 0.58,
+                        "conversion_count": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "test_id": "66013b07addd8",
+        "test_name": "Test 3",
+        "conversion_goals": [
+            "test button"
+        ],
+        "content_id": 9,
+        "content_title": "Privacy Policy Theme",
+        "target_elements": {
+            "title_variation": true,
+            "description_variation": false,
+            "image_variation": false,
+            "layout_variation": false
+        },
+        "test_duration": 1,
+        "impressions_per_variation": 1,
+        "variations": {
+            "title": "aaa, yeah"
+        },
+        "creation_date": "2024-03-25",
+        "conversion_data": [
+            {
+                "goal": "test button",
+                "variations": [
+                    {
+                        "variation_key": "title",
+                        "conversion_rate": 0.57,
+                        "conversion_count": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "test_id": "66013ca147eee",
+        "test_name": "Test 4",
+        "conversion_goals": [
+            "Test Button"
+        ],
+        "content_id": 9,
+        "content_title": "Privacy Policy Theme",
+        "target_elements": {
+            "title_variation": true,
+            "description_variation": false,
+            "image_variation": false,
+            "layout_variation": false
+        },
+        "test_duration": 1,
+        "impressions_per_variation": 1,
+        "variations": {
+            "title": "Page Edit Delete, haha"
+        },
+        "creation_date": "2024-03-25",
+        "conversion_data": [
+            {
+                "goal": "Test Button",
+                "variations": [
+                    {
+                        "variation_key": "title",
+                        "conversion_rate": 0.27,
+                        "conversion_count": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "test_id": "66013cdb02456",
+        "test_name": "Test 1",
+        "conversion_goals": [
+            "Test contact form"
+        ],
+        "content_id": 9,
+        "content_title": "Privacy Policy Theme",
+        "target_elements": {
+            "title_variation": true,
+            "description_variation": false,
+            "image_variation": false,
+            "layout_variation": false
+        },
+        "test_duration": 1,
+        "impressions_per_variation": 1,
+        "variations": {
+            "title": "ss, title 2"
+        },
+        "creation_date": "2024-03-25",
+        "conversion_data": [
+            {
+                "goal": "Test contact form",
+                "variations": [
+                    {
+                        "variation_key": "title",
+                        "conversion_rate": 0.08,
+                        "conversion_count": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "test_id": "66013e6510c2f",
+        "test_name": "Test 5",
+        "conversion_goals": [
+            "Test contact form"
         ],
         "content_id": 1,
         "content_title": "Hello world!",
         "target_elements": {
             "title_variation": true,
-            "description_variation": true,
+            "description_variation": false,
             "image_variation": false,
             "layout_variation": false
         },
-        "test_duration": 7,
-        "impressions": 0,
+        "test_duration": 1,
+        "impressions_per_variation": 1,
         "variations": {
-            "title": "First, Second",
-            "description": ""
+            "title": [
+                {
+                    "variant": "ss",
+                    "conversion_rate": 0,
+                    "conversion_count": 0
+                },
+                {
+                    "variant": "tt",
+                    "conversion_rate": 0,
+                    "conversion_count": 0
+                }
+            ]
         },
-        "creation_date": "2024-03-21"
+        "creation_date": "2024-03-25",
+        "conversion_data": [
+            {
+                "goal": "Test contact form",
+                "variations": {
+                    "title": [
+                        {
+                            "variant": "ss",
+                            "conversion_rate": 0.96,
+                            "conversion_count": 1
+                        },
+                        {
+                            "variant": "tt",
+                            "conversion_rate": 0.03,
+                            "conversion_count": 0
+                        }
+                    ]
+                }
+            }
+        ]
     }
 ]

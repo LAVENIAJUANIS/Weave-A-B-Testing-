@@ -31,5 +31,29 @@ function load_test_data() {
     }
 }
 
+
+function calculate_conversion_rate($impressions, $variation_data) {
+    // Ensure $variation_data is an array
+    if (!is_array($variation_data)) {
+        return 0; // Return 0 if $variation_data is not an array
+    }
+
+    // Check if the 'conversion_count' key exists in $variation_data
+    if (array_key_exists('conversion_count', $variation_data)) {
+        $conversion_count = $variation_data['conversion_count'];
+
+        // Ensure $impressions and $conversion_count are numeric
+        if (is_numeric($impressions) && is_numeric($conversion_count) && $impressions > 0) {
+            // Calculate conversion rate
+            $conversion_rate = ($conversion_count / $impressions) * 100;
+            return $conversion_rate;
+        }
+    }
+
+    // Return 0 if any condition fails
+    return 0;
+}
+
+
   
 ?>

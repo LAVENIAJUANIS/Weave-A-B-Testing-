@@ -21,8 +21,9 @@ function ab_testify_test_page() {
                 <div class="card">
                     <div id="action-section">
                         <h3>Action</h3>
-                        <input type="checkbox" id="goal-cta" name="conversion_goals[]" value="cta" onchange="toggleCTADropdown()">
-                        <label for="goal-cta">Clicking CTA</label><br>
+                       
+                <label for="custom_conversion_goals">Custom Conversion Goals:</label><br>
+                <input type="text" id="custom_conversion_goals" name="conversion_goals[]" placeholder="Enter custom conversion goals separated by commas"><br>
 
                         <div id="cta-dropdown" style="display: none;">
                             <label for="cta-select">Select CTA Button:</label>
@@ -143,12 +144,21 @@ function ab_testify_test_page() {
     <?php
 }
 
+function binomial_distribution($probability, $trials) {
+    $successes = 0;
+    for ($i = 0; $i < $trials; $i++) {
+        if (mt_rand() / mt_getrandmax() < $probability) {
+            $successes++;
+        }
+    }
+    return $successes;
+}
+// Hook the function to handle form submission
 add_action('admin_post_ab_testify_start_test', 'ab_testify_process_test_submission');
 
-// Function to handle AJAX request for saving test data
-// Function to handle AJAX request for saving test data
+// Function to handle form submission and process test data
 function ab_testify_process_test_submission() {
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ab_testify_submit']) && $_POST['ab_testify_submit'] == 'Start Test')  {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ab_testify_submit']) && $_POST['ab_testify_submit'] == 'Start Test') {
         // Sanitize and validate input data
         $creation_date = date('Y-m-d');
         $test_name = isset($_POST['test_name']) ? sanitize_text_field($_POST['test_name']) : '';
@@ -163,6 +173,7 @@ function ab_testify_process_test_submission() {
         }
         $test_duration = isset($_POST['test_duration']) ? intval($_POST['test_duration']) : 0;
 
+        // Prepare variations data
         $variations = array();
 
         if (isset($_POST['title_variation_checkbox']) && isset($_POST['title_variation_text'])) {
@@ -173,8 +184,15 @@ function ab_testify_process_test_submission() {
                 $second_input_field_value = sanitize_text_field($_POST['second_input_field']);
                 $title_variations[] = $second_input_field_value;
             }
-            $combined_title_variation = implode(', ', $title_variations);
-            $variations['title'] = $combined_title_variation;
+            // Separate variants with their own conversion rates and counts
+            $variations['title'] = array();
+            foreach ($title_variations as $variant) {
+                $variations['title'][] = array(
+                    'variant' => $variant,
+                    'conversion_rate' => 0,
+                    'conversion_count' => 0
+                );
+            }
         }
 
         if (isset($_POST['description_variation_checkbox']) && isset($_POST['description_variation_text'])) {
@@ -185,8 +203,15 @@ function ab_testify_process_test_submission() {
                 $second_description_field_value = sanitize_textarea_field($_POST['second_description_field']);
                 $description_variations[] = $second_description_field_value;
             }
-            $combined_description_variation = implode(', ', $description_variations);
-            $variations['description'] = $combined_description_variation;
+            // Separate variants with their own conversion rates and counts
+            $variations['description'] = array();
+            foreach ($description_variations as $variant) {
+                $variations['description'][] = array(
+                    'variant' => $variant,
+                    'conversion_rate' => 0,
+                    'conversion_count' => 0
+                );
+            }
         }
 
         // Handle image variations separately
@@ -209,6 +234,42 @@ function ab_testify_process_test_submission() {
             $variations['layout'] = sanitize_text_field($_POST['layout_variation']);
         }
 
+        // Calculate impressions
+        $total_variations = count($variations);
+        $traffic_split = 0.5; // Splitting traffic equally between variations (50% each)
+        $impressions_per_variation = ceil($traffic_split * $total_variations);
+
+        // Track conversion events for each goal and variation
+        $conversion_data = array();
+        foreach ($conversion_goals as $goal) {
+            $goal_data = array(
+                'goal' => $goal,
+                'variations' => array(),
+            );
+
+            foreach ($variations as $variation_key => $variation_data) {
+                foreach ($variation_data as $variant_data) {
+                    // Simulate conversion tracking by setting a random conversion rate
+                    $conversion_rate = mt_rand(0, 100) / 100; // Random conversion rate between 0 and 1
+                    $conversion_count = binomial_distribution($conversion_rate, $impressions_per_variation); // Simulate binomial distribution
+
+                    // Store conversion data for each variant
+                    $variant_conversion_data = array(
+                        'variant' => $variant_data['variant'],
+                        'conversion_rate' => $conversion_rate,
+                        'conversion_count' => $conversion_count,
+                    );
+
+                    // Add variant conversion data to the goal data
+                    $goal_data['variations'][$variation_key][] = $variant_conversion_data;
+                }
+            }
+
+            // Add goal data to the conversion data
+            $conversion_data[] = $goal_data;
+        }
+
+        // Prepare test data
         $test_data = array(
             'test_id' => uniqid(),
             'test_name' => $test_name,
@@ -222,9 +283,10 @@ function ab_testify_process_test_submission() {
                 'layout_variation' => isset($_POST['layout_variation_checkbox']),
             ),
             'test_duration' => $test_duration,
-            'impressions' => 0,
+            'impressions_per_variation' => $impressions_per_variation,
             'variations' => $variations,
             'creation_date' => $creation_date,
+            'conversion_data' => $conversion_data, // Add conversion data
         );
 
         // Load existing data from JSON file

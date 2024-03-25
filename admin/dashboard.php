@@ -66,7 +66,7 @@ function ab_testify_dashboard_page() {
                                 <!-- Display test status -->
                                 <td><?php echo get_test_status($test); ?></td>
                                 <!-- Display impressions -->
-                                <td><?php echo intval($test['impressions']); ?></td>
+                                <td><?php echo isset($test['impressions']) ? intval($test['impressions']) : 0; ?></td>
                                 <td>
                                 <?php if (isset($test['variations']) && isset($test['variations']['image'])) : ?>
                                     <?php $image_url = esc_url($test['variations']['image']); ?>
@@ -88,7 +88,7 @@ function ab_testify_dashboard_page() {
                                 <!-- Add View button for each test -->
                                 <td>
                                     <a href="<?php echo admin_url('admin.php?page=ab-testify-view-results&test_id=' . $key); ?>" class="button" style="background-color: lightgreen; color: black;">View</a>
-                                    <a href="<?php echo admin_url('admin.php?page=ab-testify-delete-test&test_id=' . $key); ?>" class="button" style="background-color: red; color: white;">Delete</a>
+                                    <a href="<?php echo admin_url('admin.php?page=ab-testify-delete-test&test_id=' . $key); ?>" class="button" style="background-color: red; color : white;">Delete</a>
                                     <a href="<?php echo admin_url('admin.php?page=ab-testify-add-test&test_id=' . $key); ?>" class="button" style="background-color: lightblue; color: black;">Edit</a>
                                 </td>
                             </tr>
@@ -138,10 +138,5 @@ function ab_testify_process_delete_test() {
         }
     }
 }
-
-
-
-
-
-
 ?>
+
