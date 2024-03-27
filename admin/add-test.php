@@ -95,6 +95,26 @@ function ab_testify_test_page() {
                         ?>
                     </select>
 
+                    <h2>Control Variation</h2>
+                    <label for="control_variation">Select Control Variation:</label><br>
+                    <select id="control_variation" name="control_variation">
+                        <?php
+                        // Define an array of variations representing existing/default states of the content
+                        $variations = array(
+                            'variation_1' => 'Variation 1',
+                            'variation_2' => 'Variation 2',
+                            'variation_3' => 'Variation 3',
+                            // Add more variations as needed
+                        );
+
+                        // Populate the dropdown menu with options based on the variations array
+                        foreach ($variations as $variation_key => $variation_title) {
+                            echo '<option value="' . esc_attr($variation_key) . '">' . esc_html($variation_title) . '</option>';
+                        }
+                        ?>
+                    </select><br>
+
+
                     <h2>Target Elements</h2>
                     <input type="checkbox" id="title_variation_checkbox" name="title_variation_checkbox" value="1" onchange="toggleTitleInput()">
                     <label for="title_variation_checkbox">Title</label><br>
@@ -143,7 +163,6 @@ function ab_testify_test_page() {
     </div>
     <?php
 }
-
 function binomial_distribution($probability, $trials) {
     $successes = 0;
     for ($i = 0; $i < $trials; $i++) {
@@ -153,6 +172,7 @@ function binomial_distribution($probability, $trials) {
     }
     return $successes;
 }
+
 // Hook the function to handle form submission
 add_action('admin_post_ab_testify_start_test', 'ab_testify_process_test_submission');
 
@@ -172,10 +192,10 @@ function ab_testify_process_test_submission() {
             }
         }
         $test_duration = isset($_POST['test_duration']) ? intval($_POST['test_duration']) : 0;
-
         // Prepare variations data
         $variations = array();
 
+        // Handle title variation
         if (isset($_POST['title_variation_checkbox']) && isset($_POST['title_variation_text'])) {
             $title_variations = array();
             $title_variation_text = sanitize_text_field($_POST['title_variation_text']);
@@ -184,17 +204,13 @@ function ab_testify_process_test_submission() {
                 $second_input_field_value = sanitize_text_field($_POST['second_input_field']);
                 $title_variations[] = $second_input_field_value;
             }
-            // Separate variants with their own conversion rates and counts
-            $variations['title'] = array();
-            foreach ($title_variations as $variant) {
-                $variations['title'][] = array(
-                    'variant' => $variant,
-                    'conversion_rate' => 0,
-                    'conversion_count' => 0
-                );
+            // Store each title variation separately in the $variations array
+            foreach ($title_variations as $index => $variation) {
+                $variations['title_' . ($index + 1)] = $variation;
             }
         }
 
+        // Handle description variation
         if (isset($_POST['description_variation_checkbox']) && isset($_POST['description_variation_text'])) {
             $description_variations = array();
             $description_variation_text = sanitize_textarea_field($_POST['description_variation_text']);
@@ -203,18 +219,13 @@ function ab_testify_process_test_submission() {
                 $second_description_field_value = sanitize_textarea_field($_POST['second_description_field']);
                 $description_variations[] = $second_description_field_value;
             }
-            // Separate variants with their own conversion rates and counts
-            $variations['description'] = array();
-            foreach ($description_variations as $variant) {
-                $variations['description'][] = array(
-                    'variant' => $variant,
-                    'conversion_rate' => 0,
-                    'conversion_count' => 0
-                );
+            // Store each description variation separately in the $variations array
+            foreach ($description_variations as $index => $variation) {
+                $variations['description_' . ($index + 1)] = $variation;
             }
         }
 
-        // Handle image variations separately
+        // Handle image variation
         if (isset($_FILES['image_variation']) && !empty($_FILES['image_variation']['tmp_name'])) {
             // Validate the uploaded image
             $image_file = $_FILES['image_variation'];
@@ -226,86 +237,129 @@ function ab_testify_process_test_submission() {
                 $base64_image = base64_encode($image_data);
 
                 // Add the base64 image to the test data
-                $variations['image'] = $base64_image;
+                $variations['image'] = $base64_image; // Store image as a string
             }
         }
 
+        // Handle layout variation
         if (isset($_POST['layout_variation_checkbox']) && isset($_POST['layout_variation'])) {
             $variations['layout'] = sanitize_text_field($_POST['layout_variation']);
         }
 
-        // Calculate impressions
+        // Calculate end date
+        if (isset($_POST['test_duration'])) {
+            $test_duration_days = intval($_POST['test_duration']);
+            $end_date = strtotime("+$test_duration_days days", strtotime($creation_date));
+            // Get current date
+            $current_date = time();
+
+            // Compare current date with end date
+            if ($current_date < $end_date) {
+                echo "The test is still running.";
+            } else {
+                echo "The test has ended.";
+            }
+        }
+
+        // Calculate impressions per variation
         $total_variations = count($variations);
-        $traffic_split = 0.5; // Splitting traffic equally between variations (50% each)
+        $traffic_split = 0.7;
         $impressions_per_variation = ceil($traffic_split * $total_variations);
 
-        // Track conversion events for each goal and variation
-        $conversion_data = array();
-        foreach ($conversion_goals as $goal) {
-            $goal_data = array(
-                'goal' => $goal,
-                'variations' => array(),
-            );
+        $extended_test_duration = 14;
 
-            foreach ($variations as $variation_key => $variation_data) {
-                foreach ($variation_data as $variant_data) {
-                    // Simulate conversion tracking by setting a random conversion rate
-                    $conversion_rate = mt_rand(0, 100) / 100; // Random conversion rate between 0 and 1
-                    $conversion_count = binomial_distribution($conversion_rate, $impressions_per_variation); // Simulate binomial distribution
+        // Retrieve control variation key from form submission
+        $control_variation_key = isset($_POST['control_variation']) ? sanitize_key($_POST['control_variation']) : '';
 
-                    // Store conversion data for each variant
-                    $variant_conversion_data = array(
-                        'variant' => $variant_data['variant'],
-                        'conversion_rate' => $conversion_rate,
-                        'conversion_count' => $conversion_count,
-                    );
-
-                    // Add variant conversion data to the goal data
-                    $goal_data['variations'][$variation_key][] = $variant_conversion_data;
+        // Check if the control variation key is valid
+        if (!empty($control_variation_key) && array_key_exists($control_variation_key, $variations)) {
+            // Control variation is defined and exists
+            // Proceed with your code using $control_variation_key as the control variation
+            // Track conversion events for each goal and variation
+            $conversion_data = array();
+            foreach ($conversion_goals as $goal) {
+                $goal_data = array(
+                    'goal' => $goal,
+                    'variations' => array(),
+                );
+    
+                // Simulate conversion tracking for control variation
+                $control_conversion_rate = mt_rand(0, 100) / 100; // Random conversion rate between 0 and 1
+                $control_conversion_count = binomial_distribution($control_conversion_rate, $impressions_per_variation); // Simulate binomial distribution
+    
+                // Store conversion data for control variation
+                $control_variation_conversion_data = array(
+                    'variation_key' => $control_variation_key,
+                    'conversion_rate' => $control_conversion_rate,
+                    'conversion_count' => $control_conversion_count,
+                );
+    
+                // Add control variation conversion data to the goal data
+                $goal_data['variations'][] = $control_variation_conversion_data;
+    
+                // Track conversion events for other variations
+                foreach ($variations as $variation_key => $variation_data) {
+                    if ($variation_key !== $control_variation_key) {
+                        // Simulate conversion tracking for other variations
+                        $variation_conversion_rate = mt_rand(0, 100) / 100; // Random conversion rate between 0 and 1
+                        $variation_conversion_count = binomial_distribution($variation_conversion_rate, $impressions_per_variation); // Simulate binomial distribution
+    
+                        // Store conversion data for each variation
+                        $variation_conversion_data = array(
+                            'variation_key' => $variation_key,
+                            'conversion_rate' => $variation_conversion_rate,
+                            'conversion_count' => $variation_conversion_count,
+                        );
+    
+                        // Add variation conversion data to the goal data
+                        $goal_data['variations'][] = $variation_conversion_data;
+                    }
                 }
+    
+                // Add goal data to the conversion data
+                $conversion_data[] = $goal_data;
+    
+                $test_data = array(
+                    'test_id' => uniqid(),
+                    'test_name' => $test_name,
+                    'conversion_goals' => $conversion_goals,
+                    'content_id' => $selected_content_id,
+                    'content_title' => $selected_content_title,
+                    'target_elements' => array(
+                        'title_variation' => isset($_POST['title_variation_checkbox']),
+                        'description_variation' => isset($_POST['description_variation_checkbox']),
+                        'image_variation' => isset($_POST['image_variation_checkbox']),
+                        'layout_variation' => isset($_POST['layout_variation_checkbox']),
+                    ),
+                    'test_duration' => $extended_test_duration,
+                    'impressions_per_variation' => $impressions_per_variation,
+                    'variations' => $variations,
+                    'creation_date' => $creation_date,
+                    'conversion_data' => $conversion_data,
+                );
+    
+                // Load existing data from JSON file
+                $existing_data_path = plugin_dir_path(__FILE__) . 'ab_testing_data.json';
+                $existing_data = file_exists($existing_data_path) ? json_decode(file_get_contents($existing_data_path), true) : array();
+    
+                // Append new test data to existing data
+                $existing_data[] = $test_data;
+    
+                // Encode and save updated data to JSON file
+                $json_data = json_encode($existing_data, JSON_PRETTY_PRINT);
+                if (file_put_contents($existing_data_path, $json_data) === false) {
+                    wp_die('Error writing to file.');
+                } else {
+                    echo 'Data saved successfully.';
+                }
+    
+                // Redirect to the dashboard after saving data
+                wp_redirect(admin_url('admin.php?page=ab-testify-dashboard'));
+                exit();
+            
             }
-
-            // Add goal data to the conversion data
-            $conversion_data[] = $goal_data;
         }
-
-        // Prepare test data
-        $test_data = array(
-            'test_id' => uniqid(),
-            'test_name' => $test_name,
-            'conversion_goals' => $conversion_goals,
-            'content_id' => $selected_content_id,
-            'content_title' => $selected_content_title,
-            'target_elements' => array(
-                'title_variation' => isset($_POST['title_variation_checkbox']),
-                'description_variation' => isset($_POST['description_variation_checkbox']),
-                'image_variation' => isset($_POST['image_variation_checkbox']),
-                'layout_variation' => isset($_POST['layout_variation_checkbox']),
-            ),
-            'test_duration' => $test_duration,
-            'impressions_per_variation' => $impressions_per_variation,
-            'variations' => $variations,
-            'creation_date' => $creation_date,
-            'conversion_data' => $conversion_data, // Add conversion data
-        );
-
-        // Load existing data from JSON file
-        $existing_data_path = plugin_dir_path(__FILE__) . 'ab_testing_data.json';
-        $existing_data = file_exists($existing_data_path) ? json_decode(file_get_contents($existing_data_path), true) : array();
-
-        // Append new test data to existing data
-        $existing_data[] = $test_data;
-
-        // Encode and save updated data to JSON file
-        $json_data = json_encode($existing_data, JSON_PRETTY_PRINT);
-        if (file_put_contents($existing_data_path, $json_data) === false) {
-            wp_die('Error writing to file.');
-        } else {
-            echo 'Data saved successfully.';
-        }
-
-        // Redirect to the dashboard after saving data
-        wp_redirect(admin_url('admin.php?page=ab-testify-dashboard'));
-        exit();
     }
 }
+    
+                   

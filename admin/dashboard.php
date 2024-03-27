@@ -65,6 +65,7 @@ function ab_testify_dashboard_page() {
                                 <td><?php echo esc_html($test['test_name']); ?></td>
                                 <!-- Display test status -->
                                 <td><?php echo get_test_status($test); ?></td>
+
                                 <!-- Display impressions -->
                                 <td><?php echo isset($test['impressions']) ? intval($test['impressions']) : 0; ?></td>
                                 <td>
@@ -110,10 +111,49 @@ function ab_testify_dashboard_page() {
 function get_test_status($test) {
     // Determine test status based on your criteria
     // For example, you can check if the test has reached a certain duration, or if enough data has been collected
-    // Return appropriate status message
-    return 'Active'; // Example status message
-}
+    $test_duration_days = $test['test_duration'];
+    $creation_date = strtotime($test['creation_date']);
+    $end_date = strtotime("+$test_duration_days days", $creation_date);
+    $current_date = time();
 
+    $percentage = 0;
+    if ($current_date < $end_date) {
+        $percentage = ($current_date - $creation_date) / ($end_date - $creation_date) * 100;
+    } else {
+        $percentage = 100;
+    }
+
+    $percentage = round($percentage, 2);
+
+    // Return a bar graph instead of a string
+    $graph_width = min(100, $percentage);
+    $status = '<div class="ab-test-status-bar-graph">';
+    $status .= '<div class="ab-test-status-bar-graph-inner" style="width: ' . $graph_width . '%;"></div>';
+    $status .= '</div>';
+    $status .= '<div class="ab-test-status-percentage">' . $percentage . '%</div>';
+
+    // Include CSS
+    $status .= '<style>';
+    $status .= '.ab-test-status-bar-graph {';
+    $status .= '  width: 100px;';
+    $status .= '  height: 10px;';
+    $status .= '  border: 1px solid #ccc;';
+    $status .= '  overflow: hidden;';
+    $status .= '}';
+    $status .= '.ab-test-status-bar-graph-inner {';
+    $status .= '  height: 100%;';
+    $status .= '  background-color: green;';
+    $status .= '  transition: width 0.5s;';
+    $status .= '}';
+    $status .= '.ab-test-status-percentage {';
+    $status .= '  display: inline-block;';
+    $status .= '  margin-left: 5px;';
+    $status .= '  font-size: 12px;';
+    $status .= '}';
+    $status .= '</style>';
+
+    return $status;
+}
 // Process deletion request
 add_action('admin_init', 'ab_testify_process_delete_test');
 
