@@ -16,7 +16,8 @@ function ab_testify_view_results_page() {
         echo '<div class="wrap">';
         echo '<h1>Results for ' . esc_html($test_name) . '</h1>';
         echo '<h1>Title: ' . esc_html($test_data[$test_id]['content_title']) . '</h1>';
-
+        
+       
 
         // Fetch impressions and variations data
         $impressions = $test_data[$test_id]['impressions_per_variation'] ?? 0; // Fetch impressions per variation
@@ -97,6 +98,23 @@ function ab_testify_view_results_page() {
         echo '</tbody>';
         echo '</table>';
 
+        // Call the function to render control version and variant boxes
+        if (isset($_GET['test_id'])) {
+            $test_id = $_GET['test_id'];
+            $test_data = load_test_data();
+        }
+       
+        if (isset($test_data['content_id'])) {
+            $thumbnail_url = get_the_post_thumbnail_url($test_data['content_id']);
+        } else {
+            // Handle the case where 'content_id' is not set
+            $thumbnail_url = ''; // or provide a default URL
+        }
+        
+        // Get the thumbnail URL of the chosen content
+        // $thumbnail_url = get_the_post_thumbnail_url($test_data['content_id']);
+
+        render_control_and_variant_boxes($test_id, $test_data, $thumbnail_url);
 
             echo '<h2>Statistical Significance</h2>';
             echo '<p>';
@@ -172,6 +190,20 @@ function ab_testify_view_results_page() {
     }
 }
 
+function render_test_results($test_id) {
+    $test_data = get_post_meta($test_id, 'test_data', true);
+
+    if (!empty($test_data)) {
+        $control_id = $test_data['control_content_id'];
+        $variant_id = $test_data['variant_content_id'];
+
+        $control_thumbnail_url = get_the_post_thumbnail_url($control_id);
+        $variant_thumbnail_url = get_the_post_thumbnail_url($variant_id);
+        
+        render_control_and_variant_boxes($test_id, $test_data, $control_thumbnail_url, $variant_thumbnail_url);
+    }
+}
+
 // Function to render a variation chart
 function render_variation_chart($variation_key, $conversion_data) {
     // Initialize arrays to store data for the chart
@@ -220,4 +252,43 @@ function render_variation_chart($variation_key, $conversion_data) {
     echo 'var myChart = new Chart(ctx, ' . json_encode($chartConfig) . ');';
     echo '</script>';
 }
+
+
+
+function render_control_and_variant_boxes($test_id, $test_data, $thumbnail_url) {
+    echo '<div class="control-variant-boxes" style="display: flex;">';
+
+    // Display Control Version Box
+    render_version_box('Control Version', $test_data['control_variation'] ?? '', $test_data['content_title'] ?? '', $test_data['impressions_per_variation'] ?? 0, $thumbnail_url ?? '');
+
+    // Display Variant Box
+    render_version_box('Variant', $test_data['variations']['variant'] ?? '', $test_data['content_title'] ?? '', $test_data['impressions_per_variation'] ?? 0, $thumbnail_url ?? '');
+
+    echo '</div>';
+}
+
+function render_version_box($box_title, $variation_text, $content_title, $impressions, $thumbnail_url) {
+    echo '<div class="version-box" style="flex: 1; border: 1px solid #ccc; padding: 10px; margin: 10px;">';
+    echo '<h2>' . $box_title . '</h2>';
+
+    // Display the thumbnail if the URL is provided
+    if (!empty($thumbnail_url)) {
+        echo '<div style="float: left; margin-right: 10px;"><img src="' . esc_url($thumbnail_url) . '" alt="Thumbnail" width="50" height="50"></div>';
+    }
+
+    // Display variation details
+    echo '<div style="text-align: right;">';
+    echo '<p><strong>Content Title:</strong> ' . $content_title . '</p>';
+    echo '<p><strong>Variation Text:</strong> ' . $variation_text . '</p>';
+    echo '<p><strong>Impressions:</strong> ' . $impressions . '</p>';
+    echo '</div>';
+
+    echo '</div>';
+}
+
+
+
+
+
+
 ?>

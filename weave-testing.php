@@ -9,20 +9,29 @@ Plugin URI: https://example.com/ab-testing-plugin
 
 
 function ab_testing_enqueue_scripts() {
+    // Enqueue jQuery
     wp_enqueue_script('jquery');
+
+    // Enqueue A/B testing script
     wp_enqueue_script('ab-testing-script', plugin_dir_url(__FILE__) . 'ab-testing.js', array('jquery'), '1.0', true);
+    wp_enqueue_style('select2-style', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css', [], '4.1.0-beta.1');
+    wp_enqueue_script('select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js', ['jquery'], '4.1.0-beta.1', true);
 }
 
 add_action('admin_enqueue_scripts', 'ab_testing_enqueue_scripts');
 
 function ab_testing_custom_tracking_enqueue_scripts() {
+    // Enqueue custom tracking script
     wp_enqueue_script('ab-testing-custom-tracking', plugin_dir_url(__FILE__) . 'custom-tracking.js', array('jquery'), '1.0', true);
 }
 
 add_action('admin_enqueue_scripts', 'ab_testing_custom_tracking_enqueue_scripts');
 
 function ab_testing_frontend_enqueue_scripts() {
+    // Enqueue scripts for frontend A/B testing
     wp_enqueue_script('jquery');
+
+    // Enqueue A/B testing scripts for frontend
     wp_enqueue_script('ab-testing-script', plugin_dir_url(__FILE__) . 'ab-testing.js', array('jquery'), '1.0', true);
     wp_enqueue_script('ab-testing-custom-tracking', plugin_dir_url(__FILE__) . 'custom-tracking.js', array('jquery'), '1.0', true);
     wp_enqueue_script('ab-testing-frontend', plugin_dir_url(__FILE__) . 'ab_testing_frontend.js', array('jquery'), '1.0', true);
@@ -40,21 +49,18 @@ add_action('admin_enqueue_scripts', 'enqueue_chart_js');
 add_action('wp_enqueue_scripts', 'ab_testing_frontend_enqueue_scripts');
 
 function enqueue_ab_testing_script() {
+    // Enqueue A/B testing script for frontend
     wp_enqueue_script('ab-testing-script', plugin_dir_url(__FILE__) . 'ab.js', array('jquery'), '1.0', true);
 }
 
 add_action('wp_enqueue_scripts', 'enqueue_ab_testing_script');
 
-
-register_activation_hook(__FILE__, 'ab_testify_activate');
-
-
 function weave_testing_enqueue_styles() {
+    // Enqueue Weave testing stylesheet
     wp_enqueue_style( 'weave-testing-style', plugin_dir_url( __FILE__ ) . 'style.css', array(), '1.0', 'all' );
 }
 
 add_action( 'wp_enqueue_scripts', 'weave_testing_enqueue_styles' );
-
 
 
 // AJAX
@@ -95,6 +101,21 @@ function ab_testify_activate() {
    
 }
 
+
+add_action('wp_ajax_get_post_thumbnail_url', 'get_post_thumbnail_url_callback');
+add_action('wp_ajax_nopriv_get_post_thumbnail_url', 'get_post_thumbnail_url_callback');
+
+function get_post_thumbnail_url_callback() {
+    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+    if ($post_id) {
+        $thumbnail_url = get_the_post_thumbnail_url($post_id, 'thumbnail');
+        wp_send_json_success(array('thumbnail_url' => $thumbnail_url));
+    } else {
+        wp_send_json_error('Invalid post ID');
+    }
+}
+
+
 add_shortcode('ab_testify_results', 'ab_testify_results_shortcode');
 
 // Shortcode function to display A/B testing results
@@ -122,7 +143,7 @@ require_once(plugin_dir_path(__FILE__) . 'test-functions.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/dashboard.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/add-test.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/results.php');
-include_once(plugin_dir_path(__FILE__) . 'admin/ab_test_metrics.php');
+
 include_once(plugin_dir_path(__FILE__) . 'admin/conversion_analysis.php');
 
 

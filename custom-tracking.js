@@ -66,11 +66,10 @@ function toggleInquiryDropdown() {
         $('#ab-testify-form').submit(function(e) {
             e.preventDefault();
     
-            // Read the selected image file
+            
             var fileInput = document.getElementById('image_variation_input');
             var imageFile = fileInput.files[0];
     
-            // Check if an image file is selected
             if (imageFile) {
                 // Read the image file as a data URL
                 var reader = new FileReader();
@@ -78,7 +77,7 @@ function toggleInquiryDropdown() {
                     // Convert the image data to base64
                     var base64Image = event.target.result;
     
-                    // Include the base64-encoded image data in the FormData object
+                    
                     var formData = new FormData();
                     formData.append('image_variation', base64Image);
     
@@ -86,12 +85,12 @@ function toggleInquiryDropdown() {
                     var otherFormData = $(this).serialize();
                     formData.append('other_data', otherFormData);
     
-                    // Send the AJAX request
+                    
                     $.ajax({
                         url: ajaxurl,
                         type: 'POST',
-                        processData: false, // Prevent jQuery from processing the FormData object
-                        contentType: false, // Prevent jQuery from setting the Content-Type header
+                        processData: false, 
+                        contentType: false, 
                         data: formData,
                         success: function(response) {
                             // Handle success response
@@ -103,12 +102,91 @@ function toggleInquiryDropdown() {
                         }
                     });
                 };
-                reader.readAsDataURL(imageFile); // Read the image file as a data URL
+                reader.readAsDataURL(imageFile); 
             } else {
                 console.log('No image file selected.');
             }
         });
     });
+    
+
+
+    
+
+    jQuery(document).ready(function($) {
+        // Your custom code here
+      
+        $('select').not('.not-select2').select2({
+            minimumResultsForSearch: -1,
+            dropdownAutoWidth: true
+        });
+      
+        // More custom code here
+      });
+    
+      // Wait for the DOM to be fully loaded
+    jQuery(document).ready(function($) {
+        // Initialize Select2 on elements with the class 'js-example-basic-single'
+        $('.js-example-basic-single').select2({
+            minimumResultsForSearch: -1,
+            dropdownAutoWidth: true
+        });
+    });
+
+
+
+  // Wait for the DOM to be fully loaded
+jQuery(document).ready(function($) {
+    // Initialize Select2 on elements with the class 'js-example-basic-single'
+    $('.js-example-basic-single').select2({
+        minimumResultsForSearch: -1,
+        dropdownAutoWidth: true,
+        templateResult: formatResult, // Function to format results in the dropdown
+        templateSelection: formatSelection // Function to format the selected option
+    });
+
+    // Function to format results in the dropdown
+    function formatResult(result) {
+        if (!result.id) {
+            return result.text;
+        }
+
+        var $result = $(
+            '<span><img src="' + result.element.dataset.thumbnailUrl + '" class="thumbnail small" />' + result.text + '</span>'
+        );
+
+        return $result;
+    }
+
+    // Function to format the selected option
+    function formatSelection(selection) {
+        if (!selection.id) {
+            return selection.text;
+        }
+
+        var $selection = $(
+            '<span>' + selection.text + '</span>'
+        );
+
+        return $selection;
+    }
+
+   
+    var customCss = `
+        /* Custom CSS to adjust the size of the thumbnail */
+        .thumbnail.small {
+            width: 50px; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+            margin-right: 5px; /* Optional: Add some space between the thumbnail and the text */
+        }
+    `;
+    
+    
+    $('head').append('<style>' + customCss + '</style>');
+});
+
+
+
     
     
     

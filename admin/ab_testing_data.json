@@ -1,37 +1,32 @@
 [
     {
-        "test_id": "660268aa0b91a",
+        "test_id": "6609fa44b2f90",
         "test_name": "Test 1",
+        "control_variation": "",
         "conversion_goals": [
             "Test contact form"
         ],
         "content_id": 9,
         "content_title": "Privacy Policy Theme",
-        "target_elements": {
-            "title_variation": true,
-            "description_variation": false,
-            "image_variation": false,
-            "layout_variation": false
-        },
         "test_duration": 1,
         "impressions_per_variation": 1,
         "variations": {
             "title_1": "T1",
             "title_2": "T2"
         },
-        "creation_date": "2024-03-26",
+        "creation_date": "2024-04-01",
         "conversion_data": [
             {
                 "goal": "Test contact form",
                 "variations": [
                     {
                         "variation_key": "title_1",
-                        "conversion_rate": 0.74,
-                        "conversion_count": 0
+                        "conversion_rate": 1,
+                        "conversion_count": 1
                     },
                     {
                         "variation_key": "title_2",
-                        "conversion_rate": 0.83,
+                        "conversion_rate": 0.5,
                         "conversion_count": 1
                     }
                 ]
@@ -39,273 +34,34 @@
         ]
     },
     {
-        "test_id": "660269ee3ddbd",
+        "test_id": "6609ff3696da7",
         "test_name": "Test 2",
-        "conversion_goals": [
-            "Test Button"
-        ],
-        "content_id": 9,
-        "content_title": "Privacy Policy Theme",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": true,
-            "image_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions_per_variation": 1,
-        "variations": {
-            "description_1": "s",
-            "description_2": "k"
-        },
-        "creation_date": "2024-03-26",
-        "conversion_data": [
-            {
-                "goal": "Test Button",
-                "variations": [
-                    {
-                        "variation_key": "description_1",
-                        "conversion_rate": 0.1,
-                        "conversion_count": 0
-                    },
-                    {
-                        "variation_key": "description_2",
-                        "conversion_rate": 0.02,
-                        "conversion_count": 0
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "test_id": "66026ee48e050",
-        "test_name": "Test 2",
-        "conversion_goals": [
-            ""
-        ],
-        "content_id": 9,
-        "content_title": "Privacy Policy Theme",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": true,
-            "image_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions_per_variation": 1,
-        "variations": {
-            "description_1": "df",
-            "description_2": "sc"
-        },
-        "creation_date": "2024-03-26",
-        "conversion_data": [
-            {
-                "goal": "",
-                "variations": [
-                    {
-                        "variation_key": "description_1",
-                        "conversion_rate": 0.23,
-                        "conversion_count": 0
-                    },
-                    {
-                        "variation_key": "description_2",
-                        "conversion_rate": 0.85,
-                        "conversion_count": 0
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "test_id": "6602734ea7d13",
-        "test_name": "Test 1",
-        "conversion_goals": [
-            "Test contact form"
-        ],
-        "content_id": 1,
-        "content_title": "Hello world!",
-        "target_elements": {
-            "title_variation": true,
-            "description_variation": false,
-            "image_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 1,
-        "impressions_per_variation": 1,
-        "variations": {
-            "title_1": "T1",
-            "title_2": "T2"
-        },
-        "creation_date": "2024-03-26",
-        "conversion_data": [
-            {
-                "goal": "Test contact form",
-                "variations": [
-                    {
-                        "variation_key": "title_1",
-                        "conversion_rate": 0.68,
-                        "conversion_count": 1
-                    },
-                    {
-                        "variation_key": "title_2",
-                        "conversion_rate": 0.03,
-                        "conversion_count": 0
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "test_id": "660279e615c6e",
-        "test_name": "Test 4",
+        "control_variation": "",
         "conversion_goals": [
             "test button"
         ],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": true,
-            "description_variation": false,
-            "image_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 7,
+        "content_id": 9,
+        "content_title": "Privacy Policy Theme",
+        "test_duration": 1,
         "impressions_per_variation": 1,
         "variations": {
-            "title_1": "T1",
-            "title_2": "T2"
+            "title_1": "privacy",
+            "title_2": "Privacy"
         },
-        "creation_date": "2024-03-26",
+        "creation_date": "2024-04-01",
         "conversion_data": [
             {
                 "goal": "test button",
                 "variations": [
                     {
                         "variation_key": "title_1",
-                        "conversion_rate": 0.31,
+                        "conversion_rate": 0.63,
                         "conversion_count": 0
                     },
                     {
                         "variation_key": "title_2",
-                        "conversion_rate": 0.39,
-                        "conversion_count": 0
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "test_id": "66027c8f8e99d",
-        "test_name": "Test 4",
-        "conversion_goals": [
-            "Test Button"
-        ],
-        "content_id": 9,
-        "content_title": "Privacy Policy Theme",
-        "target_elements": {
-            "title_variation": true,
-            "description_variation": false,
-            "image_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 14,
-        "impressions_per_variation": 2,
-        "variations": {
-            "title_1": "aaa",
-            "title_2": "haha"
-        },
-        "creation_date": "2024-03-26",
-        "conversion_data": [
-            {
-                "goal": "Test Button",
-                "variations": [
-                    {
-                        "variation_key": "title_1",
-                        "conversion_rate": 0.77,
-                        "conversion_count": 2
-                    },
-                    {
-                        "variation_key": "title_2",
-                        "conversion_rate": 0.88,
+                        "conversion_rate": 0.79,
                         "conversion_count": 1
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "test_id": "66028549c335f",
-        "test_name": "Test 5",
-        "conversion_goals": [
-            "test button"
-        ],
-        "content_id": 9,
-        "content_title": "Privacy Policy Theme",
-        "target_elements": {
-            "title_variation": true,
-            "description_variation": false,
-            "image_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 14,
-        "impressions_per_variation": 2,
-        "variations": {
-            "title_1": "Title V1",
-            "title_2": "Title V2"
-        },
-        "creation_date": "2024-03-26",
-        "conversion_data": [
-            {
-                "goal": "test button",
-                "variations": [
-                    {
-                        "variation_key": "title_1",
-                        "conversion_rate": 0.92,
-                        "conversion_count": 2
-                    },
-                    {
-                        "variation_key": "title_2",
-                        "conversion_rate": 0.51,
-                        "conversion_count": 0
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "test_id": "66028aeb01688",
-        "test_name": "Test 6",
-        "conversion_goals": [
-            "Test Button"
-        ],
-        "content_id": 2,
-        "content_title": "Sample Page",
-        "target_elements": {
-            "title_variation": false,
-            "description_variation": true,
-            "image_variation": false,
-            "layout_variation": false
-        },
-        "test_duration": 14,
-        "impressions_per_variation": 2,
-        "variations": {
-            "description_1": "d1",
-            "description_2": "d2"
-        },
-        "creation_date": "2024-03-26",
-        "conversion_data": [
-            {
-                "goal": "Test Button",
-                "variations": [
-                    {
-                        "variation_key": "description_1",
-                        "conversion_rate": 0.65,
-                        "conversion_count": 0
-                    },
-                    {
-                        "variation_key": "description_2",
-                        "conversion_rate": 0.58,
-                        "conversion_count": 2
                     }
                 ]
             }

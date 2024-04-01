@@ -51,9 +51,9 @@ function ab_testify_dashboard_page() {
                             <th scope="col">Test Name</th>
                             <th scope="col">Status</th>
                             <th scope="col">Page Views</th>
-                            <th scope="col">Image Variation</th> <!-- Added Image Variation column -->
-                            <th scope="col">Variation Title</th> <!-- Added Variation Title column -->
-                            <th scope="col">Variation Description</th>
+                            <!-- <th scope="col">Image Variation</th> 
+                            <th scope="col">Variation Title</th> 
+                            <th scope="col">Variation Description</th> -->
                             <th scope="col">Date Created</th> <!-- Changed column name -->
                             <th scope="col">Actions</th> <!-- Added Actions column -->
                         </tr>
@@ -68,7 +68,7 @@ function ab_testify_dashboard_page() {
 
                                 <!-- Display impressions -->
                                 <td><?php echo isset($test['impressions']) ? intval($test['impressions']) : 0; ?></td>
-                                <td>
+                                <!-- <td>
                                 <?php if (isset($test['variations']) && isset($test['variations']['image'])) : ?>
                                     <?php $image_url = esc_url($test['variations']['image']); ?>
                                     <?php if (!empty($image_url)) : ?>
@@ -79,11 +79,9 @@ function ab_testify_dashboard_page() {
                                 <?php else : ?>
                                     No Image
                                 <?php endif; ?>
-                            </td>
+                            </td> -->
 
-                                <td><?php echo isset($test['variations']['title']) ? esc_html($test['variations']['title']) : ''; ?></td>
-                                <!-- Display variation description -->
-                                <td><?php echo isset($test['variations']['description']) ? esc_html($test['variations']['description']) : ''; ?></td>
+                          
                                 <!-- Display creation date -->
                                 <td><?php echo isset($test['creation_date']) ? date('Y-m-d', strtotime($test['creation_date'])) : ''; ?></td>
                                 <!-- Add View button for each test -->
