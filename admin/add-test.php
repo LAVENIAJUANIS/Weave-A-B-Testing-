@@ -66,26 +66,11 @@ function ab_testify_test_page() {
                     );
                     $posts = get_posts($args);
                     if ($posts) {
-                        $post_categories = array();
                         foreach ($posts as $post) {
-                            $category = get_the_category($post->ID);
-                            if (!empty($category)) {
-                                $category_name = $category[0]->name;
-                                $post_categories[$category_name][] = $post;
-                            } else {
-                                $post_categories['Page category'][] = $post;
-                            }
-                        }
-
-                        foreach ($post_categories as $category_name => $category_posts) {
-                            echo '<optgroup label="' . esc_attr($category_name) . '">';
-                            foreach ($category_posts as $post) {
-                                $post_title = get_the_title($post->ID);
-                                $post_title = apply_filters('the_title', $post_title, $post->ID);
-                                $thumbnail_url = get_the_post_thumbnail_url($post->ID, 'thumbnail');
-                                echo '<option value="' . esc_attr($post->ID) . '" data-thumbnail-url="' . esc_attr($thumbnail_url) . '">' . esc_html($post_title) . '</option>';
-                            }
-                            echo '</optgroup>';
+                            $post_title = get_the_title($post->ID);
+                            $post_permalink = get_permalink($post->ID);
+                            $thumbnail_url = get_the_post_thumbnail_url($post->ID, 'thumbnail');
+                            echo '<option value="' . esc_attr($post->ID) . '" data-thumbnail-url="' . esc_url($thumbnail_url) . '">' . esc_html($post_title) . '</option>';
                         }
                     } else {
                         echo '<option>No posts found</option>';
@@ -93,15 +78,9 @@ function ab_testify_test_page() {
                     ?>
                 </select>
 
+
+
                     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-
-                
-
-
-                
-
-
-                    
 
                     <h2>Target Elements</h2>
                     <input type="checkbox" id="title_variation_checkbox" name="title_variation_checkbox" value="1" onchange="toggleTitleInput()">
@@ -154,7 +133,6 @@ function ab_testify_test_page() {
 
 add_action('admin_post_ab_testify_start_test', 'ab_testify_process_test_submission');
 
-
 // Function to handle form submission and process test data
 function ab_testify_process_test_submission() {
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ab_testify_submit']) && $_POST['ab_testify_submit'] == 'Start Test') {
@@ -163,13 +141,25 @@ function ab_testify_process_test_submission() {
         $test_name = isset($_POST['test_name']) ? sanitize_text_field($_POST['test_name']) : '';
         $conversion_goals = isset($_POST['conversion_goals']) ? $_POST['conversion_goals'] : array();
         $selected_content_id = isset($_POST['content']) ? intval($_POST['content']) : 0;
-        $selected_content_title = '';
+        // Fetch the selected content title and URL from the test data
+
+        $selected_content_id = isset($_POST['content']) ? intval($_POST['content']) : 0;
+        $selected_content_image_url = '';
         if ($selected_content_id) {
-            $selected_content = get_post($selected_content_id);
-            if ($selected_content) {
-                $selected_content_title = $selected_content->post_title;
-            }
+            $selected_content_image_url = get_the_post_thumbnail_url($selected_content_id, 'thumbnail');
         }
+
+        $selected_content_image_url = '';
+        if ($selected_content_id) {
+            $selected_content_image_url = get_the_post_thumbnail_url($selected_content_id, 'thumbnail');
+        }
+
+        // Fetch the selected content title and URL from the test data
+        $selected_content_title = get_the_title($selected_content_id);
+        $selected_content_url = get_permalink($selected_content_id);
+
+
+
         $test_duration = isset($_POST['test_duration']) ? intval($_POST['test_duration']) : 0;
 
         // Prepare variations data
@@ -182,7 +172,7 @@ function ab_testify_process_test_submission() {
             $variations['control'] = $control_variation; // Store control variation separately
         }
 
-       // Handle title variation
+        // Handle title variation
         if (isset($_POST['title_variation_checkbox']) && isset($_POST['title_variation_text'])) {
             $title_variations = array();
             $title_variation_text = sanitize_text_field($_POST['title_variation_text']);
@@ -211,8 +201,6 @@ function ab_testify_process_test_submission() {
                 $variations['description_' . ($index + 1)] = $variation;
             }
         }
-
-
 
         // Calculate impressions per variation, excluding control variation
         $total_variations = count($variations);
@@ -258,11 +246,14 @@ function ab_testify_process_test_submission() {
             'conversion_goals' => $conversion_goals,
             'content_id' => $selected_content_id,
             'content_title' => $selected_content_title,
-            'test_duration' => $test_duration, 
+            'content_url' => $selected_content_url,
+            'test_duration' => $test_duration,
             'impressions_per_variation' => $impressions_per_variation,
             'variations' => $variations,
             'creation_date' => $creation_date,
-            'conversion_data' => $conversion_data, 
+            'conversion_data' => $conversion_data,
+            'content_image_url' => $selected_content_image_url,
+
         );
 
         // Load existing data from JSON file
@@ -296,4 +287,3 @@ function binomial_distribution($probability, $trials) {
     }
     return $successes;
 }
-

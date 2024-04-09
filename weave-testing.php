@@ -10,8 +10,7 @@ Plugin URI: https://example.com/ab-testing-plugin
 
 function ab_testing_enqueue_scripts() {
     // Enqueue jQuery
-    wp_enqueue_script('jquery');
-
+    wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js', array(), '3.5.1', false);
     // Enqueue A/B testing script
     wp_enqueue_script('ab-testing-script', plugin_dir_url(__FILE__) . 'ab-testing.js', array('jquery'), '1.0', true);
     wp_enqueue_style('select2-style', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css', [], '4.1.0-beta.1');
@@ -129,6 +128,24 @@ function ab_testify_deactivate() {
 }
 
 
+function modify_title_based_on_variation($title, $post_id) {
+    
+    if (is_singular() && isset($_GET['ab_variation'])) {
+       
+        $selected_variation_title = urldecode($_GET['ab_variation']);
+        
+        
+        $title = $selected_variation_title;
+    }
+
+    return $title;
+}
+
+
+add_filter('the_title', 'modify_title_based_on_variation', 10, 2);
+
+
+
 
 function ab_testify_load_results_page() {
     include_once(plugin_dir_path(__FILE__) . 'admin/results.php');
@@ -143,6 +160,7 @@ require_once(plugin_dir_path(__FILE__) . 'test-functions.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/dashboard.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/add-test.php');
 include_once(plugin_dir_path(__FILE__) . 'admin/results.php');
+
 
 include_once(plugin_dir_path(__FILE__) . 'admin/conversion_analysis.php');
 
