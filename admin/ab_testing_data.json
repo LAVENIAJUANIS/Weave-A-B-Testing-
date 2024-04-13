@@ -1,6 +1,6 @@
 [
     {
-        "test_id": "66113702102e0",
+        "test_id": "6618f25901910",
         "test_name": "Test 1",
         "control_variation": "",
         "conversion_goals": [
@@ -12,16 +12,16 @@
         "test_duration": 1,
         "impressions_per_variation": 0,
         "variations": {
-            "title_1": "hello world"
+            "layout": ""
         },
-        "creation_date": "2024-04-06",
+        "creation_date": "2024-04-12",
         "conversion_data": [
             {
                 "goal": "Test contact form",
                 "variations": [
                     {
-                        "variation_key": "title_1",
-                        "conversion_rate": 0.89,
+                        "variation_key": "layout",
+                        "conversion_rate": 0.67,
                         "conversion_count": 0
                     }
                 ]
@@ -30,11 +30,41 @@
         "content_image_url": "http:\/\/project-1.test\/wp-content\/uploads\/2024\/03\/els-150x150.jpg"
     },
     {
-        "test_id": "66113d5925c7a",
-        "test_name": "Test 1",
+        "test_id": "6618f2e3c21ba",
+        "test_name": "Test 2",
         "control_variation": "",
         "conversion_goals": [
-            "Test contact form"
+            ""
+        ],
+        "content_id": 10,
+        "content_title": "Terms&#038;Conditions Theme",
+        "content_url": "http:\/\/project-1.test\/termsconditions-theme\/",
+        "test_duration": 1,
+        "impressions_per_variation": 0,
+        "variations": {
+            "layout": ""
+        },
+        "creation_date": "2024-04-12",
+        "conversion_data": [
+            {
+                "goal": "",
+                "variations": [
+                    {
+                        "variation_key": "layout",
+                        "conversion_rate": 0.31,
+                        "conversion_count": 0
+                    }
+                ]
+            }
+        ],
+        "content_image_url": false
+    },
+    {
+        "test_id": "6618f386ec49c",
+        "test_name": "Test 3",
+        "control_variation": null,
+        "conversion_goals": [
+            ""
         ],
         "content_id": 9,
         "content_title": "Privacy Policy Theme",
@@ -42,16 +72,16 @@
         "test_duration": 1,
         "impressions_per_variation": 0,
         "variations": {
-            "title_1": "T1"
+            "layout": ""
         },
-        "creation_date": "2024-04-06",
+        "creation_date": "2024-04-12",
         "conversion_data": [
             {
-                "goal": "Test contact form",
+                "goal": "",
                 "variations": [
                     {
-                        "variation_key": "title_1",
-                        "conversion_rate": 0.75,
+                        "variation_key": "layout",
+                        "conversion_rate": 0.58,
                         "conversion_count": 0
                     }
                 ]
@@ -60,11 +90,47 @@
         "content_image_url": "http:\/\/project-1.test\/wp-content\/uploads\/2024\/04\/Sunset_pier-150x150.jpg"
     },
     {
-        "test_id": "661492eb58b06",
-        "test_name": "Test 1",
-        "control_variation": "",
+        "test_id": "661a533a8273a",
+        "test_name": "Test 6",
+        "control_variation": null,
         "conversion_goals": [
-            "test button"
+            "Test contact form"
+        ],
+        "content_id": 9,
+        "content_title": "Privacy Policy Theme",
+        "content_url": "http:\/\/project-1.test\/privacy-policy-theme\/",
+        "test_duration": 1,
+        "impressions_per_variation": 1,
+        "variations": {
+            "title_1": "Penolong Dalam Kesesakan",
+            "layout": ""
+        },
+        "creation_date": "2024-04-13",
+        "conversion_data": [
+            {
+                "goal": "Test contact form",
+                "variations": [
+                    {
+                        "variation_key": "title_1",
+                        "conversion_rate": 0.71,
+                        "conversion_count": 1
+                    },
+                    {
+                        "variation_key": "layout",
+                        "conversion_rate": 0.05,
+                        "conversion_count": 0
+                    }
+                ]
+            }
+        ],
+        "content_image_url": "http:\/\/project-1.test\/wp-content\/uploads\/2024\/04\/Sunset_pier-150x150.jpg"
+    },
+    {
+        "test_id": "661a5371e56e8",
+        "test_name": "Test 7",
+        "control_variation": null,
+        "conversion_goals": [
+            "Test Button"
         ],
         "content_id": 3,
         "content_title": "Privacy Policy",
@@ -72,63 +138,27 @@
         "test_duration": 1,
         "impressions_per_variation": 1,
         "variations": {
-            "title_1": "privacy",
-            "title_2": "privacy policy"
+            "description_1": "Terlalu Ajaib",
+            "layout": ""
         },
-        "creation_date": "2024-04-09",
+        "creation_date": "2024-04-13",
         "conversion_data": [
             {
-                "goal": "test button",
+                "goal": "Test Button",
                 "variations": [
                     {
-                        "variation_key": "title_1",
-                        "conversion_rate": 0.39,
+                        "variation_key": "description_1",
+                        "conversion_rate": 0.87,
                         "conversion_count": 1
                     },
                     {
-                        "variation_key": "title_2",
-                        "conversion_rate": 0.94,
-                        "conversion_count": 0
+                        "variation_key": "layout",
+                        "conversion_rate": 0.57,
+                        "conversion_count": 1
                     }
                 ]
             }
         ],
         "content_image_url": "http:\/\/project-1.test\/wp-content\/uploads\/2024\/03\/bg-150x150.jpg"
-    },
-    {
-        "test_id": "6614963c36d4b",
-        "test_name": "Test 2",
-        "control_variation": "",
-        "conversion_goals": [
-            "Test contact form"
-        ],
-        "content_id": 1,
-        "content_title": "Hello world!",
-        "content_url": "http:\/\/project-1.test\/2024\/03\/12\/hello-world\/",
-        "test_duration": 1,
-        "impressions_per_variation": 1,
-        "variations": {
-            "title_1": "T1",
-            "title_2": "T2"
-        },
-        "creation_date": "2024-04-09",
-        "conversion_data": [
-            {
-                "goal": "Test contact form",
-                "variations": [
-                    {
-                        "variation_key": "title_1",
-                        "conversion_rate": 0.5,
-                        "conversion_count": 1
-                    },
-                    {
-                        "variation_key": "title_2",
-                        "conversion_rate": 0.71,
-                        "conversion_count": 1
-                    }
-                ]
-            }
-        ],
-        "content_image_url": "http:\/\/project-1.test\/wp-content\/uploads\/2024\/03\/els-150x150.jpg"
     }
 ]

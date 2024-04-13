@@ -22,7 +22,8 @@ function ab_testify_view_results_page() {
         $impressions = $test_data[$test_id]['impressions_per_variation'] ?? 0; // Fetch impressions per variation
         $variations = $test_data[$test_id]['variations'] ?? [];
 
-        // Display Conversion Rates table
+       
+       // Display Conversion Rates table
         echo '<h2>Conversion Rates</h2>';
         echo '<table class="widefat">';
         echo '<thead>';
@@ -35,8 +36,23 @@ function ab_testify_view_results_page() {
         echo '<tbody>';
         foreach ($variations as $variation_key => $variation_data) {
             echo '<tr>';
-            echo '<td>' . esc_html($variation_data) . '</td>';
-            
+            // Display the appropriate variation content based on the variation type
+            if (strpos($variation_key, 'title_') === 0) {
+                // Title variation
+                $title_variation_number = substr($variation_key, 6);
+                echo '<td>Title Variation ' . $title_variation_number . ': ' . esc_html($variation_data) . '</td>';
+            } elseif (strpos($variation_key, 'description_') === 0) {
+                // Description variation
+                $description_variation_number = substr($variation_key, 12);
+                echo '<td>Description Variation ' . $description_variation_number . ': ' . nl2br(esc_html($variation_data)) . '</td>';
+            } elseif ($variation_key === 'image_1' && isset($variation_data['image_variation_url'])) {
+                // Image variation
+                echo '<td><img src="' . esc_url($variation_data['image_variation_url']) . '" style="max-width: 100px;" alt="Variation Image"></td>';
+            } else {
+                // Default case
+                echo '<td>N/A</td>';
+            }
+
             // Find the conversion rate and impressions for the current variation key
             $conversion_rate = null;
             $impressions_count = 0; // Initialize impressions count
@@ -69,10 +85,25 @@ function ab_testify_view_results_page() {
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
-        foreach ($variations as $variation_key => $variation_title) {
+        foreach ($variations as $variation_key => $variation_data) {
             echo '<tr>';
-            echo '<td>' . esc_html($variation_title) . '</td>';
-        
+            // Display the appropriate variation content based on the variation type
+            if (strpos($variation_key, 'title_') === 0) {
+                // Title variation
+                $title_variation_number = substr($variation_key, 6);
+                echo '<td>Title Variation ' . $title_variation_number . ': ' . esc_html($variation_data) . '</td>';
+            } elseif (strpos($variation_key, 'description_') === 0) {
+                // Description variation
+                $description_variation_number = substr($variation_key, 12);
+                echo '<td>Description Variation ' . $description_variation_number . ': ' . nl2br(esc_html($variation_data)) . '</td>';
+            } elseif ($variation_key === 'image_1' && isset($variation_data['image_variation_url'])) {
+                // Image variation
+                echo '<td><img src="' . esc_url($variation_data['image_variation_url']) . '" style="max-width: 100px;" alt="Variation Image"></td>';
+            } else {
+                // Default case
+                echo '<td>N/A</td>';
+            }
+
             // Check if the test data and conversion data are set
             if (isset($test_data[$test_id]) && isset($test_data[$test_id]['conversion_data'])) {
                 // Loop through each conversion data for the current variation
@@ -93,6 +124,8 @@ function ab_testify_view_results_page() {
         echo '</tbody>';
         echo '</table>';
 
+
+
         // Call the function to render control version and variant boxes
         if (isset($test_data[$test_id]['content_id'])) {
             $control_screenshot_url = get_the_post_thumbnail_url($test_data[$test_id]['content_id']);
@@ -100,101 +133,118 @@ function ab_testify_view_results_page() {
             render_control_and_variation_boxes($test_id, $test_data[$test_id], $control_screenshot_url, $variant_screenshot_url);
         }
 
-        
-
-        // Display Statistical Significance and Graphical Representations
-        display_statistical_significance($test_id, $variations, $test_data);
-        display_graphical_representations($variations, $test_data[$test_id]['conversion_data'] ?? []);
-
         echo '</div>'; // End of wrap div
     }
 }
+
 
 // Function to render control and variation boxes
 function render_control_and_variation_boxes($test_id, $test_data, $control_screenshot_url, $variant_screenshot_url) {
     // Output the HTML for comparison boxes
     echo '<div style="display: flex; justify-content: space-around; margin-top: 20px;">';
+
     // Box A for Control Version
     echo '<div style="width: 40%; border: 1px solid #ccc; padding: 5px;">'; // Modified width and padding
     echo '<h3>Control Version</h3>';
+
     // Output the screenshot or content preview of the control version
     if (!empty($control_screenshot_url)) {
         echo '<img src="' . esc_url($control_screenshot_url) . '" style="max-width: 100%;" alt="Control Version">';
     } else {
         echo '<p>No screenshot available</p>';
     }
+
+    // Get Page Views, Conversions, and Conversion Rate for Control Version
+    $control_metrics = render_variation_metrics($test_data['conversion_data'], 'control');
+
+    // Output Page Views, Conversions, and Conversion Rate for Control Version
+    echo $control_metrics;
+
     // Output a link to the control version's page
     echo '<p><a href="' . esc_url(get_permalink($test_data['content_id'])) . '">View Control Version</a></p>';
     echo '</div>';
 
-   // Box B for Variation
-echo '<div style="width: 40%; border: 1px solid #ccc; padding: 5px;">'; // Modified width and padding
-echo '<h3>Variation</h3>';
+    // Box B for Variation
+    echo '<div style="width: 40%; border: 1px solid #ccc; padding: 5px;">'; // Modified width and padding
+    echo '<h3>Variation</h3>';
 
-// Ensure the array key exists and handle null values
-$variations = isset($test_data['variations']) ? $test_data['variations'] : array();
-$variation_title = isset($variations['title_1']) ? esc_html($variations['title_1']) : '';
+    // Ensure the array keys exist and handle null values for title variation
+    $title_variation = isset($test_data['variations']['title_1']) ? esc_html($test_data['variations']['title_1']) : '';
+    // Output the title variation
+    echo '<h4>Title Variation: ' . $title_variation . '</h4>';
 
-// Output the variation title
-echo '<h4>' . $variation_title . '</h4>';
+    // Ensure the array keys exist and handle null values for description variation
+    $description_variation = isset($test_data['variations']['description_1']) ? esc_html($test_data['variations']['description_1']) : '';
+    // Output the description variation
+    echo '<p>Description Variation: ' . $description_variation . '</p>';
 
-// Output the screenshot or content preview of the variation
-if (!empty($variant_screenshot_url)) {
-    echo '<img src="' . esc_url($variant_screenshot_url) . '" style="max-width: 100%;" alt="Variation">';
-} else {
-    echo '<p>No screenshot available</p>';
-}
-
-// Get the permalink of the content page/post if the 'content_id' key exists and is not null
-$content_permalink = isset($test_data['content_url']) ? esc_url($test_data['content_url']) : '';
-
-// Append a different query parameter to the permalink for the variation link
-if (!empty($content_permalink)) {
-    // Replace the original title with the variation title in the permalink
-    $variation_link = esc_url(add_query_arg('ab_variation', urlencode($variation_title), $content_permalink));
-
-    // Output a link to the content page/post with the variation applied
-    echo '<p><a href="' . $variation_link . '">View Variation</a></p>';
-} else {
-    echo '<p>No content available</p>';
-}
-
-echo '</div>';
-echo '</div>';
-}
-
-
-
-// Function to display statistical significance
-function display_statistical_significance($test_id, $variations, $test_data) {
-    echo '<h2>Statistical Significance</h2>';
-    echo '<p>';
-    
-    // Perform a simple check for statistical significance (this is just an example)
-    if (count($variations) > 1) {
-        // Calculate and display statistical significance
-        // Your statistical significance calculation code here
+    // Output the screenshot or content preview of the variation
+    if (!empty($variant_screenshot_url)) {
+        echo '<img src="' . esc_url($variant_screenshot_url) . '" style="max-width: 100%;" alt="Variation">';
     } else {
-        echo 'Statistical significance calculation requires multiple variations.';
+        echo '<p>No screenshot available</p>';
     }
-    
-    echo '</p>';
-}
 
-// Function to display graphical representations
-function display_graphical_representations($variations, $conversion_data) {
-    echo '<h2>Graphical Representations</h2>';
-    echo '<div style="display: flex; flex-wrap: wrap;">';
-    foreach ($variations as $variation_key => $variation_data) {
-        // Render the chart for each variation
-        render_variation_chart($variation_key, $conversion_data);
+    // Get Page Views, Conversions, and Conversion Rate for Variation
+    $variation_metrics = render_variation_metrics($test_data['conversion_data'], 'variation');
+
+    // Output Page Views, Conversions, and Conversion Rate for Variation
+    echo $variation_metrics;
+
+    // Get the permalink of the content page/post if the 'content_url' key exists and is not null
+    $content_permalink = isset($test_data['content_url']) ? esc_url($test_data['content_url']) : '';
+
+    // Append a different query parameter to the permalink for the variation link
+    if (!empty($content_permalink)) {
+        // Replace the original title with the variation title in the permalink for title variation
+        $title_variation_link = esc_url(add_query_arg('ab_variation', urlencode($title_variation), $content_permalink));
+        // Replace the original title with the variation description in the permalink for description variation
+        $description_variation_link = esc_url(add_query_arg('ab_variation', urlencode($description_variation), $content_permalink));
+
+        // Output a link to the content page/post with the variation applied for title variation
+        echo '<p><a href="' . $title_variation_link . '">View Variation (Title)</a></p>';
+        // Output a link to the content page/post with the variation applied for description variation
+        echo '<p><a href="' . $description_variation_link . '">View Variation (Description)</a></p>';
+    } else {
+        echo '<p>No content available</p>';
     }
+
+    echo '</div>';
     echo '</div>';
 }
 
-// Function to render a variation chart
-function render_variation_chart($variation_key, $conversion_data) {
-    // Chart rendering logic here
+
+// Function to render Page Views, Conversions, and Conversion Rate for Control Version and Variation
+function render_variation_metrics($conversion_data, $variation_type) {
+    // Initialize variables to store metrics
+    $page_views = 0;
+    $conversions = 0;
+    $conversion_rate = 0;
+
+    // Loop through conversion data to find the specified variation type and fetch its metrics
+    foreach ($conversion_data as $goal_data) {
+        foreach ($goal_data['variations'] as $variation) {
+            // Check if the variation key matches the specified variation type
+            if ($variation['variation_key'] === $variation_type) {
+                // Fetch the metrics for the specified variation
+                $page_views = $variation['impressions'];
+                $conversions = $variation['conversion_count'];
+                $conversion_rate = $variation['conversion_rate'];
+                break 2; // Break both loops once the variation is found
+            }
+        }
+    }
+
+    // Return Page Views, Conversions, and Conversion Rate for the specified variation type
+    return '<p>Page Views (' . ucfirst($variation_type) . '): ' . $page_views . '</p>' .
+           '<p>Conversions (' . ucfirst($variation_type) . '): ' . $conversions . '</p>' .
+           '<p>Conversion Rate (' . ucfirst($variation_type) . '): ' . number_format($conversion_rate * 100, 2) . '%</p>';
 }
+
+
+
+
+
+
 
 ?>

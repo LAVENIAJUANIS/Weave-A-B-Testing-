@@ -19,6 +19,8 @@ function ab_testing_enqueue_scripts() {
 
 add_action('admin_enqueue_scripts', 'ab_testing_enqueue_scripts');
 
+
+
 function ab_testing_custom_tracking_enqueue_scripts() {
     // Enqueue custom tracking script
     wp_enqueue_script('ab-testing-custom-tracking', plugin_dir_url(__FILE__) . 'custom-tracking.js', array('jquery'), '1.0', true);
@@ -54,12 +56,12 @@ function enqueue_ab_testing_script() {
 
 add_action('wp_enqueue_scripts', 'enqueue_ab_testing_script');
 
-function weave_testing_enqueue_styles() {
+function ab_testing_enqueue_styles() {
     // Enqueue Weave testing stylesheet
-    wp_enqueue_style( 'weave-testing-style', plugin_dir_url( __FILE__ ) . 'style.css', array(), '1.0', 'all' );
+    wp_enqueue_style( 'ab-testing-style', plugin_dir_url( __FILE__ ) . 'style.css', array(), '1.0', 'all' );
 }
 
-add_action( 'wp_enqueue_scripts', 'weave_testing_enqueue_styles' );
+add_action( 'wp_enqueue_scripts', 'ab_testing_enqueue_styles' );
 
 
 // AJAX
@@ -118,6 +120,7 @@ function get_post_thumbnail_url_callback() {
 add_shortcode('ab_testify_results', 'ab_testify_results_shortcode');
 
 // Shortcode function to display A/B testing results
+
 
 
 
