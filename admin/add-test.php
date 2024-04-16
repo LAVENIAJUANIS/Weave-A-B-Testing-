@@ -5,6 +5,7 @@ add_action('admin_menu', 'ab_testify_add_test_page');
 function ab_testify_add_test_page() {
     add_submenu_page('ab-testify-dashboard', 'Add Test', 'Add Test', 'manage_options', 'ab-testify-add-test', 'ab_testify_test_page');
 }
+
 function ab_testify_test_page() {
     // Load existing data from JSON file
     $existing_data_path = plugin_dir_path(__FILE__) . 'ab_testing_data.json';
@@ -97,7 +98,7 @@ function ab_testify_test_page() {
                     <input type="file" id="image_variation_upload" name="image_variation_upload" accept="image/*">
                    <br>
                     
-                   <select id="layout-select" onchange="changeLayout(this.value)">
+                   <select id="layout-select" onchange="changeLayout(this.value)" name="layout_variation">
                     <option value="single-column">Single Column Layout</option>
                     <option value="two-column">Two Column Layout</option>
                     <option value="three-column">Three Column Layout</option>

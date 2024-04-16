@@ -147,6 +147,38 @@ function modify_title_based_on_variation($title, $post_id) {
 
 add_filter('the_title', 'modify_title_based_on_variation', 10, 2);
 
+function modify_image_based_on_variation($post_id) {
+    // Check if the current context is a singular post and if the ab_image_variation query parameter is set in the URL
+    if (is_singular() && isset($_GET['ab_image_variation'])) {
+        // Decode the value of ab_image_variation from the URL
+        $selected_image_variation = urldecode($_GET['ab_image_variation']);
+
+        // Get the attachment ID based on the URL of the image variation
+        $attachment_id = attachment_url_to_postid($selected_image_variation);
+
+        if ($attachment_id) {
+            // Update the content of the post to replace the original image URL with the image variation URL
+            $post_content = get_post_field('post_content', $post_id);
+            $modified_content = str_replace(wp_get_attachment_url(get_post_thumbnail_id($post_id)), $selected_image_variation, $post_content);
+            wp_update_post(array('ID' => $post_id, 'post_content' => $modified_content));
+        }
+    }
+}
+
+// Hook the function to the wp action
+add_action('wp', 'modify_image_based_on_variation');
+
+
+
+function modify_layout_based_on_variation($layout) {
+    if (is_singular() && isset($_GET['ab_layout_variation'])) {
+        $selected_layout_variation = sanitize_text_field($_GET['ab_layout_variation']);
+        $layout = $selected_layout_variation;
+    }
+    return $layout;
+}
+
+add_filter('body_class', 'modify_layout_based_on_variation');
 
 
 

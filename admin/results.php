@@ -48,6 +48,9 @@ function ab_testify_view_results_page() {
             } elseif ($variation_key === 'image_1' && isset($variation_data['image_variation_url'])) {
                 // Image variation
                 echo '<td><img src="' . esc_url($variation_data['image_variation_url']) . '" style="max-width: 100px;" alt="Variation Image"></td>';
+            } elseif ($variation_key === 'layout') {
+                echo '<td>Layout Variation: ' . esc_html($variation_data) . '</td>';
+            
             } else {
                 // Default case
                 echo '<td>N/A</td>';
@@ -99,10 +102,14 @@ function ab_testify_view_results_page() {
             } elseif ($variation_key === 'image_1' && isset($variation_data['image_variation_url'])) {
                 // Image variation
                 echo '<td><img src="' . esc_url($variation_data['image_variation_url']) . '" style="max-width: 100px;" alt="Variation Image"></td>';
+            } elseif ($variation_key === 'layout') {
+                // Layout variation
+                echo '<td>Layout Variation: ' . esc_html($variation_data) . '</td>';
             } else {
                 // Default case
                 echo '<td>N/A</td>';
             }
+            
 
             // Check if the test data and conversion data are set
             if (isset($test_data[$test_id]) && isset($test_data[$test_id]['conversion_data'])) {
@@ -178,33 +185,60 @@ function render_control_and_variation_boxes($test_id, $test_data, $control_scree
     // Output the description variation
     echo '<p>Description Variation: ' . $description_variation . '</p>';
 
-    // Output the screenshot or content preview of the variation
-    if (!empty($variant_screenshot_url)) {
+
+    // Ensure the layout variation is set
+    $layout_variation = isset($test_data['variations']['layout']) ? esc_html($test_data['variations']['layout']) : '';
+
+    // Output the layout variation
+    echo '<h4>Layout Variation: ' . $layout_variation . '</h4>';
+
+
+    // Check if image variation exists in test data
+    if (isset($test_data['variations']['image_1']) && isset($test_data['variations']['image_1']['image_variation_url'])) {
+        // Output the screenshot or content preview of the image variation
+        echo '<img src="' . esc_url($test_data['variations']['image_1']['image_variation_url']) . '" style="max-width: 100%;" alt="Variation">';
+    } elseif (!empty($variant_screenshot_url)) {
+        // Output the screenshot or content preview of the original variation if no image variation exists
         echo '<img src="' . esc_url($variant_screenshot_url) . '" style="max-width: 100%;" alt="Variation">';
     } else {
-        echo '<p>No screenshot available</p>';
+        // Output a message if neither image variation nor original screenshot is available
+        echo '<p>No variation available</p>';
     }
-
     // Get Page Views, Conversions, and Conversion Rate for Variation
     $variation_metrics = render_variation_metrics($test_data['conversion_data'], 'variation');
 
     // Output Page Views, Conversions, and Conversion Rate for Variation
     echo $variation_metrics;
+    $image_variation = isset($test_data['image_variation']) ? $test_data['image_variation'] : '';
 
     // Get the permalink of the content page/post if the 'content_url' key exists and is not null
     $content_permalink = isset($test_data['content_url']) ? esc_url($test_data['content_url']) : '';
-
     // Append a different query parameter to the permalink for the variation link
     if (!empty($content_permalink)) {
+        
+        $title_variation = isset($test_data['variations']['title_1']) ? esc_html($test_data['variations']['title_1']) : '';
+    
         // Replace the original title with the variation title in the permalink for title variation
         $title_variation_link = esc_url(add_query_arg('ab_variation', urlencode($title_variation), $content_permalink));
-        // Replace the original title with the variation description in the permalink for description variation
-        $description_variation_link = esc_url(add_query_arg('ab_variation', urlencode($description_variation), $content_permalink));
-
+        
         // Output a link to the content page/post with the variation applied for title variation
         echo '<p><a href="' . $title_variation_link . '">View Variation (Title)</a></p>';
+    
+
+        // Replace the original title with the variation description in the permalink for description variation
+        $description_variation_link = esc_url(add_query_arg('ab_variation', urlencode($description_variation), $content_permalink));
+        // Replace the original title with the variation layout in the permalink for layout variation
+        $layout_variation_link = esc_url(add_query_arg('ab_layout_variation', urlencode($layout_variation), $content_permalink));
+
+        // Replace the original title with the variation image in the permalink for image variation
+        $image_variation_link = esc_url(add_query_arg('ab_image_variation', urlencode($image_variation), $content_permalink));
+   
         // Output a link to the content page/post with the variation applied for description variation
         echo '<p><a href="' . $description_variation_link . '">View Variation (Description)</a></p>';
+        // Output a link to the content page/post with the variation applied for layout variation
+        echo '<p><a href="' . $layout_variation_link . '">View Variation (Layout)</a></p>';
+
+        echo '<p><a href="' . $image_variation_link . '">View Variation (Image)</a></p>';
     } else {
         echo '<p>No content available</p>';
     }

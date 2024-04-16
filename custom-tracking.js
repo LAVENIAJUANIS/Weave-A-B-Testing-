@@ -174,6 +174,25 @@ function changeLayout(layoutVariation) {
     }
 }
 
+//handle image 
+
+// Get the image element
+var imageElement = document.getElementById('myImage');
+
+// Get the URL of the variation image from the query parameter
+var variationImageURL = getURLParameter('ab_image_variation');
+
+// Update the src attribute of the image element
+if (variationImageURL) {
+    imageElement.src = decodeURIComponent(variationImageURL);
+}
+
+// Function to extract query parameters from URL
+function getURLParameter(name) {
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
 
 
 
